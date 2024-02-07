@@ -1,0 +1,11 @@
+#define IDEN 1
+#define SUMA 2
+#define REST 3
+#define MULT 4
+#define DIVI 5
+#define IGUA 6
+#define ENTE 7
+#define PYCO 8
+#define PARI 9
+#define PARD 10
+#define PRIN 11
