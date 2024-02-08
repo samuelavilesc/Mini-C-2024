@@ -1,6 +1,0 @@
-// Esto es un comentario
-x = 10;
-y = 1-x+5;
-$%&%%&
-z = x-y*10/4;
-print(x);

@@ -1,5 +1,5 @@
 lexico : lex.yy.c
-	gcc lex.yy.c -lfl -o lexico
+	gcc main.c lex.yy.c -lfl -o lexico
 
 lex.yy.c: lexico.l lexico.h
 	flex lexico.l

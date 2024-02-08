@@ -9,3 +9,8 @@
 #define PARI 9
 #define PARD 10
 #define PRIN 11
+#define CADN 12
+#define COMA 13
+#define LLAVI 14
+#define LLAVD 15
+#define MAIN 16

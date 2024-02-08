@@ -1,0 +1,13 @@
+main(){
+// Esto es un comentario
+x = 10;
+y = 1-x+5;
+$%&%%&
+z = x-y*10/4;
+print("Hola\"valido\"·",x,"adios");
+}
+/* hola que tal*/
+print("hola")
+/*
+hola y adios
+*/
