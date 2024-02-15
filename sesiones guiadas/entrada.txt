@@ -1,13 +1,13 @@
-main(){
-// Esto es un comentario
-x = 10;
-y = 1-x+5;
-$%&%%&
-z = x-y*10/4;
-print("Hola\"valido\"·",x,"adios");
-}
-/* hola que tal*/
-print("hola")
-/*
-hola y adios
-*/
+prueba() {
+    const a=0, b=0;
+    var c=5+2-2;
+    print ("Inicio del programa\n");
+    if (a) print ("a","\n");
+    else if (b) print ("No a y b\n");
+    else while (c)
+        {
+            print ("c = ",c,"\n");
+            c = c-2+1;
+        }
+ print "Final","\n";
+ }

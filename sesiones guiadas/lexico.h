@@ -13,4 +13,9 @@
 #define COMA 13
 #define LLAVI 14
 #define LLAVD 15
-#define MAIN 16
+#define VAR 16
+#define CONST 17
+#define IF 18
+#define ELSE 19
+#define WHILE 20
+#define READ 21

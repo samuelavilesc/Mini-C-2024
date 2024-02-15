@@ -7,5 +7,5 @@ lex.yy.c: lexico.l lexico.h
 clean:
 	rm -f lexico lex.yy.cc
 
-run:
-	./lexico < entrada.txt
+run: lexico entrada.txt
+	./lexico entrada.txt

@@ -3,15 +3,19 @@
 %{
     #include "lexico.h"
     #include <stdio.h>
+    #include <stdlib.h>
+    #include <math.h>
     int errores = 0;    
     void error_lexico(); /*predeclaracion de la funcion para evitar warning  */
 %}
-/*Macors de expresiones regulares*/
+/*Macros de expresiones regulares*/
 D [0-9]
 /*_ es para pq algunas palabras van asi separadas*/
 L [a-zA-Z_]
 /*MODO PANICO*/
 ERROR [^0-9a-zA-Z_ \t\n\r;{}()=+\-*/,"]+
+
+ESCAPE \\\*|\\\\|\\\"|\\[ntr]
 /* Opciones de flex */
 /* Activando el conteo correcto de instrucciones*/
 %option yylineno
@@ -19,18 +23,24 @@ ERROR [^0-9a-zA-Z_ \t\n\r;{}()=+\-*/,"]+
 /* la x es para que lo ejecute a parte del automata principal del resto d expresiones*/
 /*Expresiones regulares de tokens*/
 %%
-
-"main"                          {return MAIN; }
+"var"                           {return VAR; }
+"const"                         {return CONST; }
+"if"                            {return IF; }
+"else"                          {return ELSE; }
+"while"                         {return WHILE; }
+"read"                          {return READ; }
 "{"                             {return LLAVI; }
 "}"                             {return LLAVD; }
 "print"                         {return PRIN; }
-{L}({L}|{D})*                   {return IDEN; }
+{L}({L}|{D})*                   {if(yyleng < 32) return IDEN; 
+                                 else error_lexico("La longitud de un identificador supera el límite.");}
 "+"                             {return SUMA; }
 "-"                             {return REST; }
 "*"                             {return MULT; }
 "/"                             {return DIVI; }
 "="                             {return IGUA; }
-{D}+                            {return ENTE; }
+{D}+                            {if(atol(yytext)<=pow(2,31)){ return ENTE;} 
+                                 else error_lexico("Entero demasiado largo"); }
 ";"                             {return PYCO; }
 ,                               {return COMA; }
 "("                             {return PARI; }
@@ -39,13 +49,13 @@ ERROR [^0-9a-zA-Z_ \t\n\r;{}()=+\-*/,"]+
 "/*"                            {BEGIN(comentario); } 
 <comentario>"*/"                {BEGIN(INITIAL); }
 <comentario>.|\n                {}
-["]([^"\n]|\\\")*["]            {return CADN; }
+["]([^"\n\\]|{ESCAPE})*["]      {return CADN; }
 [ \t\r\n]+                      {}
-["]([^"\n]|\\\")*               {error_lexico(); }
-{ERROR}                         {error_lexico(); }
+["]([^"\n\\]|{ESCAPE})*        {error_lexico("Fallo en el cierre de comillas"); }
+{ERROR}                         {error_lexico("Caracter invalido."); }
 
 %%
-void error_lexico(){
-    printf("Error en linea %d: %s\n",yylineno, yytext);
+void error_lexico(char *msg){
+    printf("Error en linea %d - %s %s\n",yylineno, yytext,msg);
     errores++;
 }
