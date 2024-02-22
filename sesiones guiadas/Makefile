@@ -1,4 +1,4 @@
-lexico : lex.yy.c
+lexico : lex.yy.c main.c
 	gcc main.c lex.yy.c -lfl -o lexico
 
 lex.yy.c: lexico.l lexico.h

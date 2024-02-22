@@ -1,0 +1,284 @@
+Gramática
+
+    0 $accept: lista $end
+
+    1 lista: linea
+    2      | lista linea
+
+    3 linea: expresion ";"
+
+    4 expresion: expresion "+" termino
+    5          | expresion "-" termino
+    6          | termino
+
+    7 termino: termino "*" factor
+    8        | termino "/" factor
+    9        | factor
+
+   10 factor: "(" expresion ")"
+   11       | "numero"
+   12       | "-" factor
+
+
+Terminales con las reglas donde aparecen
+
+    $end (0) 0
+    error (256)
+    "+" (258) 4
+    "*" (259) 7
+    "-" (260) 5 12
+    "/" (261) 8
+    "(" (262) 10
+    ")" (263) 10
+    "numero" (264) 11
+    ";" (265) 3
+
+
+No terminales con las reglas donde aparecen
+
+    $accept (11)
+        on left: 0
+    lista (12)
+        on left: 1 2
+        on right: 0 2
+    linea (13)
+        on left: 3
+        on right: 1 2
+    expresion (14)
+        on left: 4 5 6
+        on right: 3 4 5 10
+    termino (15)
+        on left: 7 8 9
+        on right: 4 5 6 7 8
+    factor (16)
+        on left: 10 11 12
+        on right: 7 8 9 12
+
+
+Estado 0
+
+    0 $accept: • lista $end
+
+    "-"       desplazar e ir al estado 1
+    "("       desplazar e ir al estado 2
+    "numero"  desplazar e ir al estado 3
+
+    lista      ir al estado 4
+    linea      ir al estado 5
+    expresion  ir al estado 6
+    termino    ir al estado 7
+    factor     ir al estado 8
+
+
+Estado 1
+
+   12 factor: "-" • factor
+
+    "-"       desplazar e ir al estado 1
+    "("       desplazar e ir al estado 2
+    "numero"  desplazar e ir al estado 3
+
+    factor  ir al estado 9
+
+
+Estado 2
+
+   10 factor: "(" • expresion ")"
+
+    "-"       desplazar e ir al estado 1
+    "("       desplazar e ir al estado 2
+    "numero"  desplazar e ir al estado 3
+
+    expresion  ir al estado 10
+    termino    ir al estado 7
+    factor     ir al estado 8
+
+
+Estado 3
+
+   11 factor: "numero" •
+
+    $default  reduce usando la regla 11 (factor)
+
+
+Estado 4
+
+    0 $accept: lista • $end
+    2 lista: lista • linea
+
+    $end      desplazar e ir al estado 11
+    "-"       desplazar e ir al estado 1
+    "("       desplazar e ir al estado 2
+    "numero"  desplazar e ir al estado 3
+
+    linea      ir al estado 12
+    expresion  ir al estado 6
+    termino    ir al estado 7
+    factor     ir al estado 8
+
+
+Estado 5
+
+    1 lista: linea •
+
+    $default  reduce usando la regla 1 (lista)
+
+
+Estado 6
+
+    3 linea: expresion • ";"
+    4 expresion: expresion • "+" termino
+    5          | expresion • "-" termino
+
+    "+"  desplazar e ir al estado 13
+    "-"  desplazar e ir al estado 14
+    ";"  desplazar e ir al estado 15
+
+
+Estado 7
+
+    6 expresion: termino •
+    7 termino: termino • "*" factor
+    8        | termino • "/" factor
+
+    "*"  desplazar e ir al estado 16
+    "/"  desplazar e ir al estado 17
+
+    $default  reduce usando la regla 6 (expresion)
+
+
+Estado 8
+
+    9 termino: factor •
+
+    $default  reduce usando la regla 9 (termino)
+
+
+Estado 9
+
+   12 factor: "-" factor •
+
+    $default  reduce usando la regla 12 (factor)
+
+
+Estado 10
+
+    4 expresion: expresion • "+" termino
+    5          | expresion • "-" termino
+   10 factor: "(" expresion • ")"
+
+    "+"  desplazar e ir al estado 13
+    "-"  desplazar e ir al estado 14
+    ")"  desplazar e ir al estado 18
+
+
+Estado 11
+
+    0 $accept: lista $end •
+
+    $default  aceptar
+
+
+Estado 12
+
+    2 lista: lista linea •
+
+    $default  reduce usando la regla 2 (lista)
+
+
+Estado 13
+
+    4 expresion: expresion "+" • termino
+
+    "-"       desplazar e ir al estado 1
+    "("       desplazar e ir al estado 2
+    "numero"  desplazar e ir al estado 3
+
+    termino  ir al estado 19
+    factor   ir al estado 8
+
+
+Estado 14
+
+    5 expresion: expresion "-" • termino
+
+    "-"       desplazar e ir al estado 1
+    "("       desplazar e ir al estado 2
+    "numero"  desplazar e ir al estado 3
+
+    termino  ir al estado 20
+    factor   ir al estado 8
+
+
+Estado 15
+
+    3 linea: expresion ";" •
+
+    $default  reduce usando la regla 3 (linea)
+
+
+Estado 16
+
+    7 termino: termino "*" • factor
+
+    "-"       desplazar e ir al estado 1
+    "("       desplazar e ir al estado 2
+    "numero"  desplazar e ir al estado 3
+
+    factor  ir al estado 21
+
+
+Estado 17
+
+    8 termino: termino "/" • factor
+
+    "-"       desplazar e ir al estado 1
+    "("       desplazar e ir al estado 2
+    "numero"  desplazar e ir al estado 3
+
+    factor  ir al estado 22
+
+
+Estado 18
+
+   10 factor: "(" expresion ")" •
+
+    $default  reduce usando la regla 10 (factor)
+
+
+Estado 19
+
+    4 expresion: expresion "+" termino •
+    7 termino: termino • "*" factor
+    8        | termino • "/" factor
+
+    "*"  desplazar e ir al estado 16
+    "/"  desplazar e ir al estado 17
+
+    $default  reduce usando la regla 4 (expresion)
+
+
+Estado 20
+
+    5 expresion: expresion "-" termino •
+    7 termino: termino • "*" factor
+    8        | termino • "/" factor
+
+    "*"  desplazar e ir al estado 16
+    "/"  desplazar e ir al estado 17
+
+    $default  reduce usando la regla 5 (expresion)
+
+
+Estado 21
+
+    7 termino: termino "*" factor •
+
+    $default  reduce usando la regla 7 (termino)
+
+
+Estado 22
+
+    8 termino: termino "/" factor •
+
+    $default  reduce usando la regla 8 (termino)
