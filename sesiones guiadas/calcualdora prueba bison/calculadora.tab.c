@@ -70,13 +70,18 @@
 #line 1 "calculadora.y"
 
     #include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
     extern int yylex();
     extern int yylineno;
-    extern char* yytext;
     void yyerror(const char* msg);
+    int regs[10];
+    void inicializar_regs();
+    void asignar_reg(char *reg, int valor);
+    int leer_reg(char *reg);
+    void imprimir_regs();
 
-
-#line 80 "calculadora.tab.c"
+#line 85 "calculadora.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -108,19 +113,23 @@ enum yysymbol_kind_t
   YYSYMBOL_YYerror = 1,                    /* error  */
   YYSYMBOL_YYUNDEF = 2,                    /* "invalid token"  */
   YYSYMBOL_SUMA = 3,                       /* "+"  */
-  YYSYMBOL_PROD = 4,                       /* "*"  */
-  YYSYMBOL_RESTA = 5,                      /* "-"  */
+  YYSYMBOL_RESTA = 4,                      /* "-"  */
+  YYSYMBOL_PROD = 5,                       /* "*"  */
   YYSYMBOL_DIVI = 6,                       /* "/"  */
-  YYSYMBOL_PARI = 7,                       /* "("  */
-  YYSYMBOL_PARD = 8,                       /* ")"  */
+  YYSYMBOL_PARD = 7,                       /* ")"  */
+  YYSYMBOL_PARI = 8,                       /* "("  */
   YYSYMBOL_NUME = 9,                       /* "numero"  */
   YYSYMBOL_PYCO = 10,                      /* ";"  */
-  YYSYMBOL_YYACCEPT = 11,                  /* $accept  */
-  YYSYMBOL_lista = 12,                     /* lista  */
-  YYSYMBOL_linea = 13,                     /* linea  */
-  YYSYMBOL_expresion = 14,                 /* expresion  */
-  YYSYMBOL_termino = 15,                   /* termino  */
-  YYSYMBOL_factor = 16                     /* factor  */
+  YYSYMBOL_IGUA = 11,                      /* "="  */
+  YYSYMBOL_REG = 12,                       /* "registro"  */
+  YYSYMBOL_YYACCEPT = 13,                  /* $accept  */
+  YYSYMBOL_entrada = 14,                   /* entrada  */
+  YYSYMBOL_inicializar = 15,               /* inicializar  */
+  YYSYMBOL_lista = 16,                     /* lista  */
+  YYSYMBOL_linea = 17,                     /* linea  */
+  YYSYMBOL_expresion = 18,                 /* expresion  */
+  YYSYMBOL_termino = 19,                   /* termino  */
+  YYSYMBOL_factor = 20                     /* factor  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -446,21 +455,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  11
+#define YYFINAL  3
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   23
+#define YYLAST   29
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  11
+#define YYNTOKENS  13
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  6
+#define YYNNTS  8
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  13
+#define YYNRULES  17
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  23
+#define YYNSTATES  30
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   265
+#define YYMAXUTOK   267
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -500,15 +509,15 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10
+       5,     6,     7,     8,     9,    10,    11,    12
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    27,    27,    28,    30,    32,    33,    34,    36,    37,
-      38,    40,    41,    42
+       0,    44,    44,    47,    50,    51,    54,    55,    60,    63,
+      66,    71,    74,    77,    82,    85,    88,    91
 };
 #endif
 
@@ -524,9 +533,10 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "\"end of file\"", "error", "\"invalid token\"", "\"+\"", "\"*\"",
-  "\"-\"", "\"/\"", "\"(\"", "\")\"", "\"numero\"", "\";\"", "$accept",
-  "lista", "linea", "expresion", "termino", "factor", YY_NULLPTR
+  "\"end of file\"", "error", "\"invalid token\"", "\"+\"", "\"-\"",
+  "\"*\"", "\"/\"", "\")\"", "\"(\"", "\"numero\"", "\";\"", "\"=\"",
+  "\"registro\"", "$accept", "entrada", "inicializar", "lista", "linea",
+  "expresion", "termino", "factor", YY_NULLPTR
 };
 
 static const char *
@@ -536,7 +546,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-3)
+#define YYPACT_NINF (-8)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -550,9 +560,9 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      12,    12,    12,    -3,     1,    -3,     2,    -2,    -3,    -3,
-       6,    -3,    -3,    12,    12,    -3,    12,    12,    -3,    -2,
-      -2,    -3,    -3
+      -8,     1,    -1,    -8,    11,    11,    -8,    -7,    -1,    -8,
+       2,    21,    -8,    -8,    -8,    18,    11,    -8,    11,    11,
+      -8,    11,    11,    -8,     6,    21,    21,    -8,    -8,    -8
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -560,21 +570,21 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,     0,    12,     0,     2,     0,     7,    10,    13,
-       0,     1,     3,     0,     0,     4,     0,     0,    11,     5,
-       6,     8,     9
+       3,     0,     0,     1,     0,     0,    15,    17,     2,     4,
+       0,    10,    13,    17,    16,     0,     0,     5,     0,     0,
+       6,     0,     0,    14,     0,     8,     9,    11,    12,     7
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -3,    -3,    14,    11,     9,    -1
+      -8,    -8,    -8,    -8,    16,    -3,    10,    -4
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     4,     5,     6,     7,     8
+       0,     1,     2,     8,     9,    10,    11,    12
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -582,39 +592,39 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       9,    11,    16,     0,    17,    13,     1,    14,     2,    13,
-       3,    14,    15,    10,    18,    21,    22,     1,    12,     2,
-       0,     3,    19,    20
+      14,     3,    15,     4,    16,    18,    19,     5,     6,    18,
+      19,     7,    20,    24,     0,     4,    29,    27,    28,     5,
+       6,    18,    19,    13,    17,    23,    21,    22,    25,    26
 };
 
 static const yytype_int8 yycheck[] =
 {
-       1,     0,     4,    -1,     6,     3,     5,     5,     7,     3,
-       9,     5,    10,     2,     8,    16,    17,     5,     4,     7,
-      -1,     9,    13,    14
+       4,     0,     5,     4,    11,     3,     4,     8,     9,     3,
+       4,    12,    10,    16,    -1,     4,    10,    21,    22,     8,
+       9,     3,     4,    12,     8,     7,     5,     6,    18,    19
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     5,     7,     9,    12,    13,    14,    15,    16,    16,
-      14,     0,    13,     3,     5,    10,     4,     6,     8,    15,
-      15,    16,    16
+       0,    14,    15,     0,     4,     8,     9,    12,    16,    17,
+      18,    19,    20,    12,    20,    18,    11,    17,     3,     4,
+      10,     5,     6,     7,    18,    19,    19,    20,    20,    10
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    11,    12,    12,    13,    14,    14,    14,    15,    15,
-      15,    16,    16,    16
+       0,    13,    14,    15,    16,    16,    17,    17,    18,    18,
+      18,    19,    19,    19,    20,    20,    20,    20
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     2,     2,     3,     3,     1,     3,     3,
-       1,     3,     1,     2
+       0,     2,     2,     0,     1,     2,     2,     4,     3,     3,
+       1,     3,     3,     1,     3,     1,     2,     1
 };
 
 
@@ -1347,80 +1357,126 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 2: /* lista: linea  */
-#line 27 "calculadora.y"
-               {printf("Li->L\n");}
-#line 1354 "calculadora.tab.c"
+  case 2: /* entrada: inicializar lista  */
+#line 44 "calculadora.y"
+                                  { imprimir_regs();    }
+#line 1364 "calculadora.tab.c"
     break;
 
-  case 3: /* lista: lista linea  */
-#line 28 "calculadora.y"
-                    {printf("Li->Li\n");}
-#line 1360 "calculadora.tab.c"
+  case 3: /* inicializar: %empty  */
+#line 47 "calculadora.y"
+                                  { inicializar_regs(); }
+#line 1370 "calculadora.tab.c"
     break;
 
-  case 4: /* linea: expresion ";"  */
-#line 30 "calculadora.y"
-                      {printf("L-> E;\n");}
-#line 1366 "calculadora.tab.c"
+  case 4: /* lista: linea  */
+#line 50 "calculadora.y"
+                                  { printf("Li->L\n");    }
+#line 1376 "calculadora.tab.c"
     break;
 
-  case 5: /* expresion: expresion "+" termino  */
-#line 32 "calculadora.y"
-                                 {printf("E->E+T\n");}
-#line 1372 "calculadora.tab.c"
+  case 5: /* lista: lista linea  */
+#line 51 "calculadora.y"
+                                  { printf("Li->Li L\n"); }
+#line 1382 "calculadora.tab.c"
     break;
 
-  case 6: /* expresion: expresion "-" termino  */
-#line 33 "calculadora.y"
-                                {printf("E->E-T\n");}
-#line 1378 "calculadora.tab.c"
+  case 6: /* linea: expresion ";"  */
+#line 54 "calculadora.y"
+                                  { printf("L->E [%d];\n", (yyvsp[-1].entero));  }
+#line 1388 "calculadora.tab.c"
     break;
 
-  case 7: /* expresion: termino  */
-#line 34 "calculadora.y"
-                  {printf("E->T\n");}
-#line 1384 "calculadora.tab.c"
-    break;
-
-  case 8: /* termino: termino "*" factor  */
-#line 36 "calculadora.y"
-                            {printf("T->T*F\n");}
-#line 1390 "calculadora.tab.c"
-    break;
-
-  case 9: /* termino: termino "/" factor  */
-#line 37 "calculadora.y"
-                             {printf("T->T/F\n");}
+  case 7: /* linea: "registro" "=" expresion ";"  */
+#line 55 "calculadora.y"
+                                  { printf("L->R %s=E\n",(yyvsp[-3].cadena));
+                                    asignar_reg((yyvsp[-3].cadena),(yyvsp[-1].entero));
+                                  }
 #line 1396 "calculadora.tab.c"
     break;
 
-  case 10: /* termino: factor  */
-#line 38 "calculadora.y"
-                 {printf("T->F\n");}
-#line 1402 "calculadora.tab.c"
+  case 8: /* expresion: expresion "+" termino  */
+#line 60 "calculadora.y"
+                                  { printf("E->E+T\n"); 
+                                    (yyval.entero) = (yyvsp[-2].entero) + (yyvsp[0].entero);
+                                  }
+#line 1404 "calculadora.tab.c"
     break;
 
-  case 11: /* factor: "(" expresion ")"  */
-#line 40 "calculadora.y"
-                          {printf("F->(E)\n");}
-#line 1408 "calculadora.tab.c"
+  case 9: /* expresion: expresion "-" termino  */
+#line 63 "calculadora.y"
+                                  { printf("E->E-T\n"); 
+                                    (yyval.entero) = (yyvsp[-2].entero) - (yyvsp[0].entero);
+                                  }
+#line 1412 "calculadora.tab.c"
     break;
 
-  case 12: /* factor: "numero"  */
-#line 41 "calculadora.y"
-               {printf("F->num[%d]\n",yyvsp[0]);}
-#line 1414 "calculadora.tab.c"
-    break;
-
-  case 13: /* factor: "-" factor  */
-#line 42 "calculadora.y"
-                     {printf("F->-F\n");}
+  case 10: /* expresion: termino  */
+#line 66 "calculadora.y"
+                                  { printf("E->T\n");   
+                                    (yyval.entero) = (yyvsp[0].entero);
+                                  }
 #line 1420 "calculadora.tab.c"
     break;
 
+  case 11: /* termino: termino "*" factor  */
+#line 71 "calculadora.y"
+                                  { printf("T->T*F\n");
+                                    (yyval.entero) = (yyvsp[-2].entero) * (yyvsp[0].entero);
+                                  }
+#line 1428 "calculadora.tab.c"
+    break;
 
-#line 1424 "calculadora.tab.c"
+  case 12: /* termino: termino "/" factor  */
+#line 74 "calculadora.y"
+                                  { printf("T->T/F\n");
+                                    (yyval.entero) = (yyvsp[-2].entero) / (yyvsp[0].entero);
+                                  }
+#line 1436 "calculadora.tab.c"
+    break;
+
+  case 13: /* termino: factor  */
+#line 77 "calculadora.y"
+                                  { printf("T->F\n");  
+                                    (yyval.entero) = (yyvsp[0].entero);
+                                  }
+#line 1444 "calculadora.tab.c"
+    break;
+
+  case 14: /* factor: "(" expresion ")"  */
+#line 82 "calculadora.y"
+                                  { printf("F->(E)\n");
+                                    (yyval.entero) = (yyvsp[-1].entero);
+                                  }
+#line 1452 "calculadora.tab.c"
+    break;
+
+  case 15: /* factor: "numero"  */
+#line 85 "calculadora.y"
+                                  { printf("F->num [%d]\n", (yyvsp[0].entero));
+                                    (yyval.entero) = (yyvsp[0].entero);
+                                  }
+#line 1460 "calculadora.tab.c"
+    break;
+
+  case 16: /* factor: "-" factor  */
+#line 88 "calculadora.y"
+                                  { printf("F->-F\n)");
+                                    (yyval.entero) = -(yyvsp[0].entero);
+                                  }
+#line 1468 "calculadora.tab.c"
+    break;
+
+  case 17: /* factor: "registro"  */
+#line 91 "calculadora.y"
+                                  { printf("F->REG %s\n",(yyvsp[0].cadena));
+                                    (yyval.entero) = leer_reg((yyvsp[0].cadena));
+                                  }
+#line 1476 "calculadora.tab.c"
+    break;
+
+
+#line 1480 "calculadora.tab.c"
 
       default: break;
     }
@@ -1644,8 +1700,30 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 44 "calculadora.y"
+#line 96 "calculadora.y"
 
-void yyerror(const char* msg){
-    printf("Error en la linea %d: %s\n",yylineno, msg);
+
+void yyerror(const char* msg) {
+    printf("Error en linea %d: %s\n", yylineno, msg);
+}
+
+void inicializar_regs() {
+    memset(regs,0,10*sizeof(int));
+}
+
+void asignar_reg(char *reg, int valor) {
+    // reg es una cadena de la forma r\d
+    int idx = atoi(&(reg[1]));
+    regs[idx] = valor;
+}
+
+int leer_reg(char *reg) {
+    int idx = atoi(&(reg[1]));
+    return regs[idx];
+}
+
+void imprimir_regs() {
+    for (int i = 0; i < 10; i++) {
+        printf("r%d=%d\n", i, regs[i]);
+    }
 }

@@ -55,20 +55,32 @@ extern int yydebug;
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
     SUMA = 258,                    /* "+"  */
-    PROD = 259,                    /* "*"  */
-    RESTA = 260,                   /* "-"  */
+    RESTA = 259,                   /* "-"  */
+    PROD = 260,                    /* "*"  */
     DIVI = 261,                    /* "/"  */
-    PARI = 262,                    /* "("  */
-    PARD = 263,                    /* ")"  */
+    PARD = 262,                    /* ")"  */
+    PARI = 263,                    /* "("  */
     NUME = 264,                    /* "numero"  */
-    PYCO = 265                     /* ";"  */
+    PYCO = 265,                    /* ";"  */
+    IGUA = 266,                    /* "="  */
+    REG = 267                      /* "registro"  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 16 "calculadora.y"
+
+    int entero;
+    char *cadena;
+
+#line 81 "calculadora.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
