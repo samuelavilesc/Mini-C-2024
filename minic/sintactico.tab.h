@@ -35,15 +35,21 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_CALCULADORA_TAB_H_INCLUDED
-# define YY_YY_CALCULADORA_TAB_H_INCLUDED
+#ifndef YY_YY_SINTACTICO_TAB_H_INCLUDED
+# define YY_YY_SINTACTICO_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+# define YYDEBUG 1
 #endif
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 42 "sintactico.y"
+
+ #include "listaCodigo.h"
+
+#line 53 "sintactico.tab.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -54,17 +60,28 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    SUMA = 258,                    /* "+"  */
-    RESTA = 259,                   /* "-"  */
-    PROD = 260,                    /* "*"  */
-    DIVI = 261,                    /* "/"  */
-    PARD = 262,                    /* ")"  */
-    PARI = 263,                    /* "("  */
-    NUME = 264,                    /* "numero"  */
-    PYCO = 265,                    /* ";"  */
-    IGUA = 266,                    /* "="  */
-    REG = 267,                     /* "registro"  */
-    UMINUS = 268                   /* UMINUS  */
+    id = 258,                      /* "id"  */
+    string = 259,                  /* "string"  */
+    NUME = 260,                    /* "const"  */
+    var = 261,                     /* var  */
+    CONST = 262,                   /* CONST  */
+    IF = 263,                      /* "if"  */
+    ELSE = 264,                    /* "else"  */
+    WHILE = 265,                   /* "while"  */
+    PRINT = 266,                   /* "print"  */
+    READ = 267,                    /* "read"  */
+    SUMA = 268,                    /* "+"  */
+    REST = 269,                    /* "-"  */
+    PROD = 270,                    /* "*"  */
+    DIVI = 271,                    /* "/"  */
+    PARD = 272,                    /* ")"  */
+    PARI = 273,                    /* "("  */
+    PYCO = 274,                    /* ";"  */
+    IGUA = 275,                    /* "="  */
+    COMA = 276,                    /* ","  */
+    LLAVI = 277,                   /* "{"  */
+    LLAVD = 278,                   /* "}"  */
+    UMINUS = 279                   /* UMINUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -73,12 +90,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 17 "calculadora.y"
+#line 36 "sintactico.y"
 
-    int entero;
+    
     char *cadena;
+    ListaC codigo;
 
-#line 82 "calculadora.tab.h"
+#line 100 "sintactico.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -93,4 +111,4 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_CALCULADORA_TAB_H_INCLUDED  */
+#endif /* !YY_YY_SINTACTICO_TAB_H_INCLUDED  */

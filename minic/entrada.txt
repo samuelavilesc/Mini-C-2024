@@ -1,0 +1,4 @@
+prueba() {
+  var c=0,b,a;
+  a=-1+b;
+}

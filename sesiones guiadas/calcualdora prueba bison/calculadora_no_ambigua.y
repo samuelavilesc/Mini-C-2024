@@ -10,7 +10,6 @@
     void asignar_reg(char *reg, int valor);
     int leer_reg(char *reg);
     void imprimir_regs();
-    int errores=0;
 %}
 
 /* Tipo de dato de valores semánticos */
@@ -31,17 +30,10 @@
 %token <cadena> REG "registro"
 
 /* Tipo de dato de los no terminales */
-%type <entero> expresion
+%type <entero> expresion termino factor
 
 %define parse.error verbose
-/* precedencia y asociatividad de operadores */
-%left "+" "-"
-%left "*" "/"
-%precedence UMINUS /* precedencia para el operador unario - */
-/*%left precedencia izquierda
-%right precedencia derecha
-%nonassoc precedencia no asociativa
-*/
+
 %%
 /*
 E -> E + T | E - T | T
@@ -63,31 +55,40 @@ linea     : expresion ";"         { printf("L->E [%d];\n", $1);  }
           | REG "=" expresion ";" { printf("L->R %s=E\n",$1);
                                     asignar_reg($1,$3);
                                   }
-          | error ";"             { errores++; } /*aplicar esto de error en minic suma 0.5*/
           ;
 
-expresion : expresion "+" expresion { printf("E->E+E\n"); 
+expresion : expresion "+" termino { printf("E->E+T\n"); 
                                     $$ = $1 + $3;
                                   }
-          | expresion "-" expresion { printf("E->E-E\n"); 
+          | expresion "-" termino { printf("E->E-T\n"); 
                                     $$ = $1 - $3;
                                   }
-          | expresion "*" expresion    { printf("E->E*E\n");
-                                    $$ = $1 * $3;
-                                  }
-          | expresion "/" expresion    { printf("E->E/E\n");
-                                    $$ = $1 / $3;
-                                  }
-          |"(" expresion ")"     { printf("E->(E)\n");
-                                    $$ = $2;
-                                  }
-          | NUME                  { printf("E->num [%d]\n", $1);
+          | termino               { printf("E->T\n");   
                                     $$ = $1;
                                   }
-          | "-" expresion %prec UMINUS     { printf("E->-E\n)");
+          ;
+
+termino   : termino "*" factor    { printf("T->T*F\n");
+                                    $$ = $1 * $3;
+                                  }
+          | termino "/" factor    { printf("T->T/F\n");
+                                    $$ = $1 / $3;
+                                  }
+          | factor                { printf("T->F\n");  
+                                    $$ = $1;
+                                  }
+          ;
+
+factor    : "(" expresion ")"     { printf("F->(E)\n");
+                                    $$ = $2;
+                                  }
+          | NUME                  { printf("F->num [%d]\n", $1);
+                                    $$ = $1;
+                                  }
+          | "-" factor            { printf("F->-F\n)");
                                     $$ = -$2;
                                   }
-          | REG                   { printf("E->REG %s\n",$1);
+          | REG                   { printf("F->REG %s\n",$1);
                                     $$ = leer_reg($1);
                                   }
           ;
