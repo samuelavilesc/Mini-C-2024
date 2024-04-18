@@ -11,4 +11,4 @@ clean:
 	rm -f sintactico sintactico.tab.c sintactico.tab.h lex.yy.cc
 
 run: sintactico entrada.txt
-	./sintactico entrada.txt
+	./sintactico entrada.txt > salida.s

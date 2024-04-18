@@ -1,4 +1,11 @@
 prueba() {
+  //comentario
   var c=0,b,a;
+  //comentario 2
   a=-1+b;
+  print("Hola mundo\n");
+  print(42);
+  print("\n");
+  if(a) print("a");
+  else print("b");
 }

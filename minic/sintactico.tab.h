@@ -45,7 +45,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 42 "sintactico.y"
+#line 44 "sintactico.y"
 
  #include "listaCodigo.h"
 
@@ -90,7 +90,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 36 "sintactico.y"
+#line 38 "sintactico.y"
 
     
     char *cadena;

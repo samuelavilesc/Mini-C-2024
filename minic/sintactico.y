@@ -11,6 +11,7 @@
     void insertaID(char * id,int val);
     void imprimeLS();
     int numStr=1;
+    int contador_etiq=1;
     void insertarString(char* cadena, int val);
     void buscarID(char* id, int variable);
     extern int yylex();
@@ -29,6 +30,7 @@
     char* concatena(char* str1, char* str2);
     //funcion de prueba para imprimir lista de codigo
     void imprimirLC(ListaC codigo);
+    char* nuevaEtiqueta();
 %}
 
 
@@ -66,7 +68,9 @@
 %token LLAVD "}"
 
 /* Tipo de dato de los no terminales */
-%type <codigo> expression
+%type <codigo> expression statement statement_list
+%type <codigo> print_item print_list read_list
+%type <codigo> else_part
 
 %define parse.error verbose
 %define parse.trace
@@ -85,8 +89,9 @@
 %%
 program: {ls = creaLS(); inicializarReg();} 
         id "(" ")" "{" declarations statement_list "}"       {
-            if(errores==0){
+            if(analisis_ok()){
                 imprimeLS();
+                imprimirLC($7); //la accion en mitad de la regla cuenta como simbolo
             }
             liberaLS(ls);
         }
@@ -101,29 +106,124 @@ identifier_list: identifier       {}
 identifier: id        {insertaID($1,0);}
           | id "=" expression       {insertaID($1,0);}
           ;       
-statement_list:  %empty         {}
-              | statement_list statement        {}
+statement_list:  %empty         {
+                                if(analisis_ok()){
+                                  $$=creaLC();
+                                }
+                                }
+              | statement_list statement {
+                if(analisis_ok()){
+                  $$ = $1;
+                  concatenaLC($$,$2);
+                }
+              }
               ;       
 statement: id "=" expression ";"        {buscarID($1,1);
-                                        //pruebas
+                                        
+                                        
                                         if(analisis_ok()) {
-                                          imprimirLC($3);
+                                          $$ = $3;
+                                          Operacion op;
+                                          op.op = "sw";
+                                          op.res = recuperaResLC($3);
+                                          op.arg1 = concatena("_",$1);
+                                          op.arg2 = NULL;
+                                          insertaLC($$,finalLC($$),op);
+                                          liberarReg(op.res);
                                         }
                                         }
          | "{" statement_list "}"       {}
-         | "if" "(" expression ")" statement else_part  {}
+         | "if" "(" expression ")" statement else_part  {
+          $$ = creaLC();
+          Operacion op;
+          op.op = "lw";
+          op.res = obtenerReg();
+          op.arg1 = recuperaResLC($3);
+          op.arg2 = NULL;
+          insertaLC($$,finalLC($$),op);
+          char* etiq1 = nuevaEtiqueta();
+          char* etiq2 = nuevaEtiqueta();
+          op.op = "beqz";
+          op.res = recuperaResLC($3);
+          op.arg1 = etiq1;
+          op.arg2 = NULL;
+          insertaLC($$,finalLC($$),op);
+          op.op = "b";
+          op.res = etiq2;
+          op.arg1 = op.arg2 = NULL;
+          insertaLC($$,finalLC($$),op);
+          op.op = concatena(etiq1,":");
+          op.res = op.arg1 = op.arg2 = NULL;
+          insertaLC($$,finalLC($$),op);
+          concatenaLC($$,$5);
+          op.op = concatena(etiq2,":");
+          op.res = op.arg1 = op.arg2 = NULL;
+          insertaLC($$,finalLC($$),op);
+          if($6!=NULL){ 
+            concatenaLC($$,$6);
+            liberaLC($6);
+          }
+          liberarReg(recuperaResLC($3));
+          liberaLC($3);
+          liberaLC($5);
+         }
          |"while" "(" expression ")" statement        {}
-         | "print" "(" print_list ")" ";"       {}
+         | "print" "(" print_list ")" ";"       {$$ = $3;}
          | "read" "(" read_list ")" ";"       {}
          ;        
-else_part:  %empty      {}
-            | "else" statement        {}
+else_part:  %empty      {$$ = NULL;}
+            | "else" statement        {$$=$2;}
             ;
-print_list: print_item        {}
-          | print_list "," print_item       {}
+print_list: print_item        {$$=$1;}
+          | print_list "," print_item       {
+            $$=$1;
+            concatenaLC($$,$3);
+            liberaLC($3);
+          }
           ;      
-print_item: expression        {}
-          | string        {insertarString($1,numStr);}
+print_item: expression        {
+                          if(analisis_ok()){
+                            $$ = $1;
+                            Operacion op;
+                            op.op = "li";
+                            op.res = "$v0";
+                            op.arg1 = "1";
+                            op.arg2 = NULL;
+                            insertaLC($$,finalLC($$),op);
+                            op.op = "move";
+                            op.res = "$a0";
+                            op.arg1 = recuperaResLC($1);
+                            op.arg2 = NULL;
+                            liberarReg(op.arg1);
+                            insertaLC($$,finalLC($$),op);
+                            op.op = "syscall";
+                            op.res = op.arg1 = op.arg2 = NULL;
+                            insertaLC($$,finalLC($$),op);
+                            
+                          }          
+                          }
+          | string        {
+                          insertarString($1,numStr);
+                          if(analisis_ok()){
+                            $$ = creaLC();
+                            Operacion op;
+                            op.op = "li";
+                            op.res = "$v0";
+                            op.arg1 = "4";
+                            op.arg2 = NULL;
+                            insertaLC($$,finalLC($$),op);
+                            op.op = "la";
+                            op.res = "$a0";
+                            char* str;
+                            asprintf(&str,"$str%d",numStr-1);
+                            op.arg1 = str;
+                            op.arg2 = NULL;
+                            insertaLC($$,finalLC($$),op);
+                            op.op = "syscall";
+                            op.res = op.arg1 = op.arg2 = NULL;
+                            insertaLC($$,finalLC($$),op);
+                          }          
+                          }
           ;         
 read_list: id       {buscarID($1,1);}
           | read_list "," id        {buscarID($3,1);}
@@ -194,8 +294,7 @@ expression: expression "+" expression       {
                                                 op.arg1=recuperaResLC($2);
                                                 op.arg2=NULL;
                                                 insertaLC($$,finalLC($$),op);
-                                                guardaResLC($$,op.res);
-                                              }
+                                                }
                                               }
          |"(" expression ")"        { $$ = $2; }
          | NUME       {
@@ -280,7 +379,7 @@ void imprimeLS(){
     if(aux.tipo==CADENA){
         printf("$str%d: .asciiz %s\n",aux.valor,aux.nombre);    
     }else{
-        printf("_%s .word %d\n",aux.nombre,aux.valor);    
+        printf("_%s: .word %d\n",aux.nombre,aux.valor);    
     }
     p = siguienteLS(ls,p);
   }
@@ -317,10 +416,15 @@ char* concatena(char* str1, char* str2){
   return aux;
 }
 void imprimirLC(ListaC codigo){
+  printf(".text\n.globl main\nmain:\n");
   PosicionListaC p = inicioLC(codigo);
   Operacion oper;
  while (p != finalLC(codigo)) {
   oper = recuperaLC(codigo,p);
+  if(!strcmp(oper.op,"etiq")){
+    printf("%s:",oper.res);
+  }else{
+
   printf("%s",oper.op);
   if (oper.res) printf(" %s",oper.res);
   if (oper.arg1) printf(",%s",oper.arg1);
@@ -328,4 +432,12 @@ void imprimirLC(ListaC codigo){
   printf("\n");
   p = siguienteLC(codigo,p);
  }
+}
+ printf("li $v0, 10\nsyscall\n");
+}
+char* nuevaEtiqueta(){
+    char* etiq;
+    asprintf(&etiq,"etiq%d",contador_etiq);
+    contador_etiq++;
+    return etiq;
 }
