@@ -1,5 +1,5 @@
 
-#line 2 "lex.yy.c"
+#line 3 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -517,7 +517,7 @@ char *yytext;
     #include <math.h>
     int errores = 0;
     void error_lexico(); /*predeclaracion de la funcion para evitar warning  */
-#line 520 "lex.yy.c"
+#line 521 "lex.yy.c"
 /*Macros de expresiones regulares*/
 /*_ es para pq algunas palabras van asi separadas*/
 /*MODO PANICO*/
@@ -526,7 +526,7 @@ char *yytext;
 
 /* la x es para que lo ejecute a parte del automata principal del resto d expresiones*/
 /*Expresiones regulares de tokens*/
-#line 529 "lex.yy.c"
+#line 530 "lex.yy.c"
 
 #define INITIAL 0
 #define comentario 1
@@ -746,7 +746,7 @@ YY_DECL
 	{
 #line 25 "lexico.l"
 
-#line 749 "lex.yy.c"
+#line 750 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -966,7 +966,7 @@ YY_RULE_SETUP
 #line 61 "lexico.l"
 ECHO;
 	YY_BREAK
-#line 969 "lex.yy.c"
+#line 970 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(comentario):
 	yyterminate();

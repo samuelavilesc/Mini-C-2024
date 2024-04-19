@@ -68,7 +68,7 @@
 %token LLAVD "}"
 
 /* Tipo de dato de los no terminales */
-%type <codigo> expression statement statement_list
+%type <codigo> expression statement statement_list declarations identifier_list identifier
 %type <codigo> print_item print_list read_list
 %type <codigo> else_part
 
@@ -91,20 +91,47 @@ program: {ls = creaLS(); inicializarReg();}
         id "(" ")" "{" declarations statement_list "}"       {
             if(analisis_ok()){
                 imprimeLS();
-                imprimirLC($7); //la accion en mitad de la regla cuenta como simbolo
+                concatenaLC($6,$7);
+                imprimirLC($6); //la accion en mitad de la regla cuenta como simbolo
             }
             liberaLS(ls);
         }
         ;       
-declarations:     %empty        {} 
-            | declarations var {t=VARIABLE;} identifier_list ";"        {}
-            | declarations CONST{t=CONSTANTE;} identifier_list ";"        {}
+declarations:     %empty        {$$=creaLC();} 
+            | declarations var {t=VARIABLE;} identifier_list ";"        {
+                $$=$1;
+                concatenaLC($$,$4);
+                liberaLC($4);
+            }
+            | declarations CONST{t=CONSTANTE;} identifier_list ";"        {
+                $$=$1;
+                concatenaLC($$,$4);
+                liberaLC($4);
+            }
             ;       
-identifier_list: identifier       {}
-               | identifier_list "," identifier       {}
+identifier_list: identifier       {$$=$1;}
+               | identifier_list "," identifier       {$$=$1;
+                                                      concatenaLC($$,$3);
+                                                      liberaLC($3);
+                                                      }
                ;       
-identifier: id        {insertaID($1,0);}
-          | id "=" expression       {insertaID($1,0);}
+identifier: id        {insertaID($1,0);
+                      if(analisis_ok()){
+                        $$=creaLC();
+                      }
+                      }
+          | id "=" expression       {insertaID($1,0);
+                                    if(analisis_ok()){
+                                      $$=$3;
+                                      Operacion op;
+                                      op.op="sw";
+                                      op.res=recuperaResLC($3);
+                                      op.arg1=concatena("_",$1);
+                                      op.arg2=NULL;
+                                      insertaLC($$,finalLC($$),op);
+                                      liberarReg(op.res);
+                                    }
+                                    }
           ;       
 statement_list:  %empty         {
                                 if(analisis_ok()){
@@ -115,6 +142,7 @@ statement_list:  %empty         {
                 if(analisis_ok()){
                   $$ = $1;
                   concatenaLC($$,$2);
+                  liberaLC($2);
                 }
               }
               ;       
@@ -132,15 +160,10 @@ statement: id "=" expression ";"        {buscarID($1,1);
                                           liberarReg(op.res);
                                         }
                                         }
-         | "{" statement_list "}"       {}
+         | "{" statement_list "}"       {$$=$2;}
          | "if" "(" expression ")" statement else_part  {
           $$ = $3;
           Operacion op;
-          //op.op = "lw";
-          //op.res = obtenerReg();
-          //op.arg1 = recuperaResLC($3);
-          //op.arg2 = NULL;
-          //insertaLC($$,finalLC($$),op);
           char* etiqEndIf = nuevaEtiqueta();
           char* etiqElse = nuevaEtiqueta(); 
           op.op = "beqz";
@@ -166,9 +189,32 @@ statement: id "=" expression ";"        {buscarID($1,1);
           liberarReg(recuperaResLC($3));
           liberaLC($5);
          }
-         |"while" "(" expression ")" statement        {}
+         |"while" "(" expression ")" statement        {
+          $$ = creaLC();
+          Operacion op;
+          char* etiqWhile = nuevaEtiqueta();
+          char* etiqEndWhile = nuevaEtiqueta();
+          op.op = concatena(etiqWhile,":");
+          op.res = op.arg1 = op.arg2 = NULL;
+          insertaLC($$,finalLC($$),op);
+          concatenaLC($$,$3);
+          op.op = "beqz";
+          op.res = recuperaResLC($3);
+          op.arg1 = etiqEndWhile;
+          op.arg2 = NULL;
+          insertaLC($$,finalLC($$),op);
+          concatenaLC($$,$5);
+          op.op = "b";
+          op.res = etiqWhile;
+          op.arg1 = op.arg2 = NULL;
+          insertaLC($$,finalLC($$),op);
+          op.op = concatena(etiqEndWhile,":");
+          op.res = op.arg1 = op.arg2 = NULL;
+          insertaLC($$,finalLC($$),op);
+          liberarReg(recuperaResLC($3));
+         }
          | "print" "(" print_list ")" ";"       {$$ = $3;}
-         | "read" "(" read_list ")" ";"       {}
+         | "read" "(" read_list ")" ";"       {$$=$3;}
          ;        
 else_part:  %empty      {$$ = NULL;}
             | "else" statement        {$$=$2;}
@@ -224,8 +270,33 @@ print_item: expression        {
                           }          
                           }
           ;         
-read_list: id       {buscarID($1,1);}
-          | read_list "," id        {buscarID($3,1);}
+read_list: id       {buscarID($1,1);
+                    if(analisis_ok()){
+                      $$=creaLC();
+                      Operacion op;
+                      op.op="li";
+                      op.res = "$v0";
+                      op.arg1="5";
+                      op.arg2=NULL;
+                      insertaLC($$,finalLC($$),op);
+                      op.op="syscall";
+                      op.res=op.arg1=op.arg2=NULL;
+                      insertaLC($$,finalLC($$),op);
+                      op.op="sw";
+                      op.res="$v0";
+                      op.arg1=concatena("_",$1);
+                      op.arg2=NULL;
+                      insertaLC($$,finalLC($$),op);
+                      liberarReg(op.res);
+                    }
+                    
+                    }
+          | read_list "," id        {
+                                    buscarID($3,1);
+                                    if(analisis_ok()){
+                                      $$=$1;
+                                    }
+                                    }
           ;       
 expression: expression "+" expression       {
                                             if(analisis_ok()){
