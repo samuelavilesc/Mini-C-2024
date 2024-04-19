@@ -55,6 +55,7 @@
 %token WHILE "while"
 %token PRINT "print" 
 %token READ "read"
+%token DO "do"
 %token SUMA "+"
 %token REST "-"
 %token PROD "*"
@@ -123,7 +124,7 @@ identifier: id        {insertaID($1,0);
           | id "=" expression       {insertaID($1,0);
                                     if(analisis_ok()){
                                       $$=$3;
-                                      Operacion op;
+                                      Operacion  op;
                                       op.op="sw";
                                       op.res=recuperaResLC($3);
                                       op.arg1=concatena("_",$1);
@@ -162,6 +163,7 @@ statement: id "=" expression ";"        {buscarID($1,1);
                                         }
          | "{" statement_list "}"       {$$=$2;}
          | "if" "(" expression ")" statement else_part  {
+          if(analisis_ok()){
           $$ = $3;
           Operacion op;
           char* etiqEndIf = nuevaEtiqueta();
@@ -189,7 +191,9 @@ statement: id "=" expression ";"        {buscarID($1,1);
           liberarReg(recuperaResLC($3));
           liberaLC($5);
          }
+         }
          |"while" "(" expression ")" statement        {
+          if(analisis_ok()){
           $$ = creaLC();
           Operacion op;
           char* etiqWhile = nuevaEtiqueta();
@@ -212,6 +216,27 @@ statement: id "=" expression ";"        {buscarID($1,1);
           op.res = op.arg1 = op.arg2 = NULL;
           insertaLC($$,finalLC($$),op);
           liberarReg(recuperaResLC($3));
+         }
+         }
+         | "do" statement "while" "(" expression ")" ";" {
+          if(analisis_ok()){
+          $$ = creaLC();
+          Operacion op;
+          char* etiqDo = nuevaEtiqueta();
+          op.op = concatena(etiqDo,":");
+          op.res = op.arg1 = op.arg2 = NULL;
+          insertaLC($$,finalLC($$),op);
+          concatenaLC($$,$2);
+          concatenaLC($$,$5);
+          op.op = "bnez";
+          op.res = recuperaResLC($5);
+          op.arg1 = etiqDo;
+          op.arg2 = NULL;
+          insertaLC($$,finalLC($$),op);
+          liberarReg(op.res);
+          liberaLC($2);
+          liberaLC($5);
+          }
          }
          | "print" "(" print_list ")" ";"       {$$ = $3;}
          | "read" "(" read_list ")" ";"       {$$=$3;}
@@ -252,16 +277,16 @@ print_item: expression        {
                           if(analisis_ok()){
                             $$ = creaLC();
                             Operacion op;
-                            op.op = "li";
-                            op.res = "$v0";
-                            op.arg1 = "4";
-                            op.arg2 = NULL;
-                            insertaLC($$,finalLC($$),op);
                             op.op = "la";
                             op.res = "$a0";
                             char* str;
                             asprintf(&str,"$str%d",numStr-1);
                             op.arg1 = str;
+                            op.arg2 = NULL;
+                            insertaLC($$,finalLC($$),op);
+                            op.op = "li";
+                            op.res = "$v0";
+                            op.arg1 = "4";
                             op.arg2 = NULL;
                             insertaLC($$,finalLC($$),op);
                             op.op = "syscall";

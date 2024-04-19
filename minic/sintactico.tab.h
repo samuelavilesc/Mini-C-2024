@@ -70,18 +70,19 @@ extern int yydebug;
     WHILE = 265,                   /* "while"  */
     PRINT = 266,                   /* "print"  */
     READ = 267,                    /* "read"  */
-    SUMA = 268,                    /* "+"  */
-    REST = 269,                    /* "-"  */
-    PROD = 270,                    /* "*"  */
-    DIVI = 271,                    /* "/"  */
-    PARD = 272,                    /* ")"  */
-    PARI = 273,                    /* "("  */
-    PYCO = 274,                    /* ";"  */
-    IGUA = 275,                    /* "="  */
-    COMA = 276,                    /* ","  */
-    LLAVI = 277,                   /* "{"  */
-    LLAVD = 278,                   /* "}"  */
-    UMINUS = 279                   /* UMINUS  */
+    DO = 268,                      /* "do"  */
+    SUMA = 269,                    /* "+"  */
+    REST = 270,                    /* "-"  */
+    PROD = 271,                    /* "*"  */
+    DIVI = 272,                    /* "/"  */
+    PARD = 273,                    /* ")"  */
+    PARI = 274,                    /* "("  */
+    PYCO = 275,                    /* ";"  */
+    IGUA = 276,                    /* "="  */
+    COMA = 277,                    /* ","  */
+    LLAVI = 278,                   /* "{"  */
+    LLAVD = 279,                   /* "}"  */
+    UMINUS = 280                   /* UMINUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -96,7 +97,7 @@ union YYSTYPE
     char *cadena;
     ListaC codigo;
 
-#line 100 "sintactico.tab.h"
+#line 101 "sintactico.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

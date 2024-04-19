@@ -1,4 +1,4 @@
-Estado 70 conflictos: 1 desplazamiento/reducción
+Estado 74 conflictos: 1 desplazamiento/reducción
 
 
 Gramática
@@ -32,105 +32,107 @@ Gramática
    15          | "{" statement_list "}"
    16          | "if" "(" expression ")" statement else_part
    17          | "while" "(" expression ")" statement
-   18          | "print" "(" print_list ")" ";"
-   19          | "read" "(" read_list ")" ";"
+   18          | "do" statement "while" "(" expression ")" ";"
+   19          | "print" "(" print_list ")" ";"
+   20          | "read" "(" read_list ")" ";"
 
-   20 else_part: ε
-   21          | "else" statement
+   21 else_part: ε
+   22          | "else" statement
 
-   22 print_list: print_item
-   23           | print_list "," print_item
+   23 print_list: print_item
+   24           | print_list "," print_item
 
-   24 print_item: expression
-   25           | "string"
+   25 print_item: expression
+   26           | "string"
 
-   26 read_list: "id"
-   27          | read_list "," "id"
+   27 read_list: "id"
+   28          | read_list "," "id"
 
-   28 expression: expression "+" expression
-   29           | expression "-" expression
-   30           | expression "*" expression
-   31           | expression "/" expression
-   32           | "-" expression
-   33           | "(" expression ")"
-   34           | "const"
-   35           | "id"
+   29 expression: expression "+" expression
+   30           | expression "-" expression
+   31           | expression "*" expression
+   32           | expression "/" expression
+   33           | "-" expression
+   34           | "(" expression ")"
+   35           | "const"
+   36           | "id"
 
 
 Terminales con las reglas donde aparecen
 
     $end (0) 0
     error (256)
-    "id" <cadena> (258) 2 10 11 14 26 27 35
-    "string" <cadena> (259) 25
-    "const" <cadena> (260) 34
+    "id" <cadena> (258) 2 10 11 14 27 28 36
+    "string" <cadena> (259) 26
+    "const" <cadena> (260) 35
     var (261) 5
     CONST (262) 7
     "if" (263) 16
-    "else" (264) 21
-    "while" (265) 17
-    "print" (266) 18
-    "read" (267) 19
-    "+" (268) 28
-    "-" (269) 29 32
-    "*" (270) 30
-    "/" (271) 31
-    ")" (272) 2 16 17 18 19 33
-    "(" (273) 2 16 17 18 19 33
-    ";" (274) 5 7 14 18 19
-    "=" (275) 11 14
-    "," (276) 9 23 27
-    "{" (277) 2 15
-    "}" (278) 2 15
-    UMINUS (279)
+    "else" (264) 22
+    "while" (265) 17 18
+    "print" (266) 19
+    "read" (267) 20
+    "do" (268) 18
+    "+" (269) 29
+    "-" (270) 30 33
+    "*" (271) 31
+    "/" (272) 32
+    ")" (273) 2 16 17 18 19 20 34
+    "(" (274) 2 16 17 18 19 20 34
+    ";" (275) 5 7 14 18 19 20
+    "=" (276) 11 14
+    "," (277) 9 24 28
+    "{" (278) 2 15
+    "}" (279) 2 15
+    UMINUS (280)
 
 
 No terminales con las reglas donde aparecen
 
-    $accept (25)
+    $accept (26)
         on left: 0
-    program (26)
+    program (27)
         on left: 2
         on right: 0
-    $@1 (27)
+    $@1 (28)
         on left: 1
         on right: 2
-    declarations <codigo> (28)
+    declarations <codigo> (29)
         on left: 3 5 7
         on right: 2 5 7
-    $@2 (29)
+    $@2 (30)
         on left: 4
         on right: 5
-    $@3 (30)
+    $@3 (31)
         on left: 6
         on right: 7
-    identifier_list <codigo> (31)
+    identifier_list <codigo> (32)
         on left: 8 9
         on right: 5 7 9
-    identifier <codigo> (32)
+    identifier <codigo> (33)
         on left: 10 11
         on right: 8 9
-    statement_list <codigo> (33)
+    statement_list <codigo> (34)
         on left: 12 13
         on right: 2 13 15
-    statement <codigo> (34)
-        on left: 14 15 16 17 18 19
-        on right: 13 16 17 21
-    else_part <codigo> (35)
-        on left: 20 21
+    statement <codigo> (35)
+        on left: 14 15 16 17 18 19 20
+        on right: 13 16 17 18 22
+    else_part <codigo> (36)
+        on left: 21 22
         on right: 16
-    print_list <codigo> (36)
-        on left: 22 23
-        on right: 18 23
-    print_item <codigo> (37)
-        on left: 24 25
-        on right: 22 23
-    read_list <codigo> (38)
-        on left: 26 27
-        on right: 19 27
-    expression <codigo> (39)
-        on left: 28 29 30 31 32 33 34 35
-        on right: 11 14 16 17 24 28 29 30 31 32 33
+    print_list <codigo> (37)
+        on left: 23 24
+        on right: 19 24
+    print_item <codigo> (38)
+        on left: 25 26
+        on right: 23 24
+    read_list <codigo> (39)
+        on left: 27 28
+        on right: 20 28
+    expression <codigo> (40)
+        on left: 29 30 31 32 33 34 35 36
+        on right: 11 14 16 17 18 25 29 30 31 32 33 34
 
 
 Estado 0
@@ -236,186 +238,209 @@ Estado 11
     "while"  desplazar e ir al estado 16
     "print"  desplazar e ir al estado 17
     "read"   desplazar e ir al estado 18
-    "{"      desplazar e ir al estado 19
-    "}"      desplazar e ir al estado 20
+    "do"     desplazar e ir al estado 19
+    "{"      desplazar e ir al estado 20
+    "}"      desplazar e ir al estado 21
 
-    statement  ir al estado 21
+    statement  ir al estado 22
 
 
 Estado 12
 
     5 declarations: declarations var $@2 • identifier_list ";"
 
-    "id"  desplazar e ir al estado 22
+    "id"  desplazar e ir al estado 23
 
-    identifier_list  ir al estado 23
-    identifier       ir al estado 24
+    identifier_list  ir al estado 24
+    identifier       ir al estado 25
 
 
 Estado 13
 
     7 declarations: declarations CONST $@3 • identifier_list ";"
 
-    "id"  desplazar e ir al estado 22
+    "id"  desplazar e ir al estado 23
 
-    identifier_list  ir al estado 25
-    identifier       ir al estado 24
+    identifier_list  ir al estado 26
+    identifier       ir al estado 25
 
 
 Estado 14
 
    14 statement: "id" • "=" expression ";"
 
-    "="  desplazar e ir al estado 26
+    "="  desplazar e ir al estado 27
 
 
 Estado 15
 
    16 statement: "if" • "(" expression ")" statement else_part
 
-    "("  desplazar e ir al estado 27
+    "("  desplazar e ir al estado 28
 
 
 Estado 16
 
    17 statement: "while" • "(" expression ")" statement
 
-    "("  desplazar e ir al estado 28
+    "("  desplazar e ir al estado 29
 
 
 Estado 17
 
-   18 statement: "print" • "(" print_list ")" ";"
-
-    "("  desplazar e ir al estado 29
-
-
-Estado 18
-
-   19 statement: "read" • "(" read_list ")" ";"
+   19 statement: "print" • "(" print_list ")" ";"
 
     "("  desplazar e ir al estado 30
 
 
+Estado 18
+
+   20 statement: "read" • "(" read_list ")" ";"
+
+    "("  desplazar e ir al estado 31
+
+
 Estado 19
+
+   18 statement: "do" • statement "while" "(" expression ")" ";"
+
+    "id"     desplazar e ir al estado 14
+    "if"     desplazar e ir al estado 15
+    "while"  desplazar e ir al estado 16
+    "print"  desplazar e ir al estado 17
+    "read"   desplazar e ir al estado 18
+    "do"     desplazar e ir al estado 19
+    "{"      desplazar e ir al estado 20
+
+    statement  ir al estado 32
+
+
+Estado 20
 
    15 statement: "{" • statement_list "}"
 
     $default  reduce usando la regla 12 (statement_list)
 
-    statement_list  ir al estado 31
+    statement_list  ir al estado 33
 
 
-Estado 20
+Estado 21
 
     2 program: $@1 "id" "(" ")" "{" declarations statement_list "}" •
 
     $default  reduce usando la regla 2 (program)
 
 
-Estado 21
+Estado 22
 
    13 statement_list: statement_list statement •
 
     $default  reduce usando la regla 13 (statement_list)
 
 
-Estado 22
+Estado 23
 
    10 identifier: "id" •
    11           | "id" • "=" expression
 
-    "="  desplazar e ir al estado 32
+    "="  desplazar e ir al estado 34
 
     $default  reduce usando la regla 10 (identifier)
 
 
-Estado 23
+Estado 24
 
     5 declarations: declarations var $@2 identifier_list • ";"
     9 identifier_list: identifier_list • "," identifier
 
-    ";"  desplazar e ir al estado 33
-    ","  desplazar e ir al estado 34
+    ";"  desplazar e ir al estado 35
+    ","  desplazar e ir al estado 36
 
 
-Estado 24
+Estado 25
 
     8 identifier_list: identifier •
 
     $default  reduce usando la regla 8 (identifier_list)
 
 
-Estado 25
+Estado 26
 
     7 declarations: declarations CONST $@3 identifier_list • ";"
     9 identifier_list: identifier_list • "," identifier
 
-    ";"  desplazar e ir al estado 35
-    ","  desplazar e ir al estado 34
-
-
-Estado 26
-
-   14 statement: "id" "=" • expression ";"
-
-    "id"     desplazar e ir al estado 36
-    "const"  desplazar e ir al estado 37
-    "-"      desplazar e ir al estado 38
-    "("      desplazar e ir al estado 39
-
-    expression  ir al estado 40
+    ";"  desplazar e ir al estado 37
+    ","  desplazar e ir al estado 36
 
 
 Estado 27
 
-   16 statement: "if" "(" • expression ")" statement else_part
+   14 statement: "id" "=" • expression ";"
 
-    "id"     desplazar e ir al estado 36
-    "const"  desplazar e ir al estado 37
-    "-"      desplazar e ir al estado 38
-    "("      desplazar e ir al estado 39
-
-    expression  ir al estado 41
-
-
-Estado 28
-
-   17 statement: "while" "(" • expression ")" statement
-
-    "id"     desplazar e ir al estado 36
-    "const"  desplazar e ir al estado 37
-    "-"      desplazar e ir al estado 38
-    "("      desplazar e ir al estado 39
+    "id"     desplazar e ir al estado 38
+    "const"  desplazar e ir al estado 39
+    "-"      desplazar e ir al estado 40
+    "("      desplazar e ir al estado 41
 
     expression  ir al estado 42
 
 
+Estado 28
+
+   16 statement: "if" "(" • expression ")" statement else_part
+
+    "id"     desplazar e ir al estado 38
+    "const"  desplazar e ir al estado 39
+    "-"      desplazar e ir al estado 40
+    "("      desplazar e ir al estado 41
+
+    expression  ir al estado 43
+
+
 Estado 29
 
-   18 statement: "print" "(" • print_list ")" ";"
+   17 statement: "while" "(" • expression ")" statement
 
-    "id"      desplazar e ir al estado 36
-    "string"  desplazar e ir al estado 43
-    "const"   desplazar e ir al estado 37
-    "-"       desplazar e ir al estado 38
-    "("       desplazar e ir al estado 39
+    "id"     desplazar e ir al estado 38
+    "const"  desplazar e ir al estado 39
+    "-"      desplazar e ir al estado 40
+    "("      desplazar e ir al estado 41
 
-    print_list  ir al estado 44
-    print_item  ir al estado 45
-    expression  ir al estado 46
+    expression  ir al estado 44
 
 
 Estado 30
 
-   19 statement: "read" "(" • read_list ")" ";"
+   19 statement: "print" "(" • print_list ")" ";"
 
-    "id"  desplazar e ir al estado 47
+    "id"      desplazar e ir al estado 38
+    "string"  desplazar e ir al estado 45
+    "const"   desplazar e ir al estado 39
+    "-"       desplazar e ir al estado 40
+    "("       desplazar e ir al estado 41
 
-    read_list  ir al estado 48
+    print_list  ir al estado 46
+    print_item  ir al estado 47
+    expression  ir al estado 48
 
 
 Estado 31
+
+   20 statement: "read" "(" • read_list ")" ";"
+
+    "id"  desplazar e ir al estado 49
+
+    read_list  ir al estado 50
+
+
+Estado 32
+
+   18 statement: "do" statement • "while" "(" expression ")" ";"
+
+    "while"  desplazar e ir al estado 51
+
+
+Estado 33
 
    13 statement_list: statement_list • statement
    15 statement: "{" statement_list • "}"
@@ -425,297 +450,305 @@ Estado 31
     "while"  desplazar e ir al estado 16
     "print"  desplazar e ir al estado 17
     "read"   desplazar e ir al estado 18
-    "{"      desplazar e ir al estado 19
-    "}"      desplazar e ir al estado 49
+    "do"     desplazar e ir al estado 19
+    "{"      desplazar e ir al estado 20
+    "}"      desplazar e ir al estado 52
 
-    statement  ir al estado 21
+    statement  ir al estado 22
 
 
-Estado 32
+Estado 34
 
    11 identifier: "id" "=" • expression
 
-    "id"     desplazar e ir al estado 36
-    "const"  desplazar e ir al estado 37
-    "-"      desplazar e ir al estado 38
-    "("      desplazar e ir al estado 39
+    "id"     desplazar e ir al estado 38
+    "const"  desplazar e ir al estado 39
+    "-"      desplazar e ir al estado 40
+    "("      desplazar e ir al estado 41
 
-    expression  ir al estado 50
+    expression  ir al estado 53
 
 
-Estado 33
+Estado 35
 
     5 declarations: declarations var $@2 identifier_list ";" •
 
     $default  reduce usando la regla 5 (declarations)
 
 
-Estado 34
+Estado 36
 
     9 identifier_list: identifier_list "," • identifier
 
-    "id"  desplazar e ir al estado 22
+    "id"  desplazar e ir al estado 23
 
-    identifier  ir al estado 51
+    identifier  ir al estado 54
 
 
-Estado 35
+Estado 37
 
     7 declarations: declarations CONST $@3 identifier_list ";" •
 
     $default  reduce usando la regla 7 (declarations)
 
 
-Estado 36
-
-   35 expression: "id" •
-
-    $default  reduce usando la regla 35 (expression)
-
-
-Estado 37
-
-   34 expression: "const" •
-
-    $default  reduce usando la regla 34 (expression)
-
-
 Estado 38
 
-   32 expression: "-" • expression
+   36 expression: "id" •
 
-    "id"     desplazar e ir al estado 36
-    "const"  desplazar e ir al estado 37
-    "-"      desplazar e ir al estado 38
-    "("      desplazar e ir al estado 39
-
-    expression  ir al estado 52
+    $default  reduce usando la regla 36 (expression)
 
 
 Estado 39
 
-   33 expression: "(" • expression ")"
+   35 expression: "const" •
 
-    "id"     desplazar e ir al estado 36
-    "const"  desplazar e ir al estado 37
-    "-"      desplazar e ir al estado 38
-    "("      desplazar e ir al estado 39
-
-    expression  ir al estado 53
+    $default  reduce usando la regla 35 (expression)
 
 
 Estado 40
 
-   14 statement: "id" "=" expression • ";"
-   28 expression: expression • "+" expression
-   29           | expression • "-" expression
-   30           | expression • "*" expression
-   31           | expression • "/" expression
+   33 expression: "-" • expression
 
-    "+"  desplazar e ir al estado 54
-    "-"  desplazar e ir al estado 55
-    "*"  desplazar e ir al estado 56
-    "/"  desplazar e ir al estado 57
-    ";"  desplazar e ir al estado 58
+    "id"     desplazar e ir al estado 38
+    "const"  desplazar e ir al estado 39
+    "-"      desplazar e ir al estado 40
+    "("      desplazar e ir al estado 41
+
+    expression  ir al estado 55
 
 
 Estado 41
 
-   16 statement: "if" "(" expression • ")" statement else_part
-   28 expression: expression • "+" expression
-   29           | expression • "-" expression
-   30           | expression • "*" expression
-   31           | expression • "/" expression
+   34 expression: "(" • expression ")"
 
-    "+"  desplazar e ir al estado 54
-    "-"  desplazar e ir al estado 55
-    "*"  desplazar e ir al estado 56
-    "/"  desplazar e ir al estado 57
-    ")"  desplazar e ir al estado 59
+    "id"     desplazar e ir al estado 38
+    "const"  desplazar e ir al estado 39
+    "-"      desplazar e ir al estado 40
+    "("      desplazar e ir al estado 41
+
+    expression  ir al estado 56
 
 
 Estado 42
 
-   17 statement: "while" "(" expression • ")" statement
-   28 expression: expression • "+" expression
-   29           | expression • "-" expression
-   30           | expression • "*" expression
-   31           | expression • "/" expression
+   14 statement: "id" "=" expression • ";"
+   29 expression: expression • "+" expression
+   30           | expression • "-" expression
+   31           | expression • "*" expression
+   32           | expression • "/" expression
 
-    "+"  desplazar e ir al estado 54
-    "-"  desplazar e ir al estado 55
-    "*"  desplazar e ir al estado 56
-    "/"  desplazar e ir al estado 57
-    ")"  desplazar e ir al estado 60
+    "+"  desplazar e ir al estado 57
+    "-"  desplazar e ir al estado 58
+    "*"  desplazar e ir al estado 59
+    "/"  desplazar e ir al estado 60
+    ";"  desplazar e ir al estado 61
 
 
 Estado 43
 
-   25 print_item: "string" •
+   16 statement: "if" "(" expression • ")" statement else_part
+   29 expression: expression • "+" expression
+   30           | expression • "-" expression
+   31           | expression • "*" expression
+   32           | expression • "/" expression
 
-    $default  reduce usando la regla 25 (print_item)
+    "+"  desplazar e ir al estado 57
+    "-"  desplazar e ir al estado 58
+    "*"  desplazar e ir al estado 59
+    "/"  desplazar e ir al estado 60
+    ")"  desplazar e ir al estado 62
 
 
 Estado 44
 
-   18 statement: "print" "(" print_list • ")" ";"
-   23 print_list: print_list • "," print_item
+   17 statement: "while" "(" expression • ")" statement
+   29 expression: expression • "+" expression
+   30           | expression • "-" expression
+   31           | expression • "*" expression
+   32           | expression • "/" expression
 
-    ")"  desplazar e ir al estado 61
-    ","  desplazar e ir al estado 62
+    "+"  desplazar e ir al estado 57
+    "-"  desplazar e ir al estado 58
+    "*"  desplazar e ir al estado 59
+    "/"  desplazar e ir al estado 60
+    ")"  desplazar e ir al estado 63
 
 
 Estado 45
 
-   22 print_list: print_item •
+   26 print_item: "string" •
 
-    $default  reduce usando la regla 22 (print_list)
+    $default  reduce usando la regla 26 (print_item)
 
 
 Estado 46
 
-   24 print_item: expression •
-   28 expression: expression • "+" expression
-   29           | expression • "-" expression
-   30           | expression • "*" expression
-   31           | expression • "/" expression
+   19 statement: "print" "(" print_list • ")" ";"
+   24 print_list: print_list • "," print_item
 
-    "+"  desplazar e ir al estado 54
-    "-"  desplazar e ir al estado 55
-    "*"  desplazar e ir al estado 56
-    "/"  desplazar e ir al estado 57
-
-    $default  reduce usando la regla 24 (print_item)
+    ")"  desplazar e ir al estado 64
+    ","  desplazar e ir al estado 65
 
 
 Estado 47
 
-   26 read_list: "id" •
+   23 print_list: print_item •
 
-    $default  reduce usando la regla 26 (read_list)
+    $default  reduce usando la regla 23 (print_list)
 
 
 Estado 48
 
-   19 statement: "read" "(" read_list • ")" ";"
-   27 read_list: read_list • "," "id"
+   25 print_item: expression •
+   29 expression: expression • "+" expression
+   30           | expression • "-" expression
+   31           | expression • "*" expression
+   32           | expression • "/" expression
 
-    ")"  desplazar e ir al estado 63
-    ","  desplazar e ir al estado 64
+    "+"  desplazar e ir al estado 57
+    "-"  desplazar e ir al estado 58
+    "*"  desplazar e ir al estado 59
+    "/"  desplazar e ir al estado 60
+
+    $default  reduce usando la regla 25 (print_item)
 
 
 Estado 49
+
+   27 read_list: "id" •
+
+    $default  reduce usando la regla 27 (read_list)
+
+
+Estado 50
+
+   20 statement: "read" "(" read_list • ")" ";"
+   28 read_list: read_list • "," "id"
+
+    ")"  desplazar e ir al estado 66
+    ","  desplazar e ir al estado 67
+
+
+Estado 51
+
+   18 statement: "do" statement "while" • "(" expression ")" ";"
+
+    "("  desplazar e ir al estado 68
+
+
+Estado 52
 
    15 statement: "{" statement_list "}" •
 
     $default  reduce usando la regla 15 (statement)
 
 
-Estado 50
+Estado 53
 
    11 identifier: "id" "=" expression •
-   28 expression: expression • "+" expression
-   29           | expression • "-" expression
-   30           | expression • "*" expression
-   31           | expression • "/" expression
+   29 expression: expression • "+" expression
+   30           | expression • "-" expression
+   31           | expression • "*" expression
+   32           | expression • "/" expression
 
-    "+"  desplazar e ir al estado 54
-    "-"  desplazar e ir al estado 55
-    "*"  desplazar e ir al estado 56
-    "/"  desplazar e ir al estado 57
+    "+"  desplazar e ir al estado 57
+    "-"  desplazar e ir al estado 58
+    "*"  desplazar e ir al estado 59
+    "/"  desplazar e ir al estado 60
 
     $default  reduce usando la regla 11 (identifier)
 
 
-Estado 51
+Estado 54
 
     9 identifier_list: identifier_list "," identifier •
 
     $default  reduce usando la regla 9 (identifier_list)
 
 
-Estado 52
-
-   28 expression: expression • "+" expression
-   29           | expression • "-" expression
-   30           | expression • "*" expression
-   31           | expression • "/" expression
-   32           | "-" expression •
-
-    $default  reduce usando la regla 32 (expression)
-
-
-Estado 53
-
-   28 expression: expression • "+" expression
-   29           | expression • "-" expression
-   30           | expression • "*" expression
-   31           | expression • "/" expression
-   33           | "(" expression • ")"
-
-    "+"  desplazar e ir al estado 54
-    "-"  desplazar e ir al estado 55
-    "*"  desplazar e ir al estado 56
-    "/"  desplazar e ir al estado 57
-    ")"  desplazar e ir al estado 65
-
-
-Estado 54
-
-   28 expression: expression "+" • expression
-
-    "id"     desplazar e ir al estado 36
-    "const"  desplazar e ir al estado 37
-    "-"      desplazar e ir al estado 38
-    "("      desplazar e ir al estado 39
-
-    expression  ir al estado 66
-
-
 Estado 55
 
-   29 expression: expression "-" • expression
+   29 expression: expression • "+" expression
+   30           | expression • "-" expression
+   31           | expression • "*" expression
+   32           | expression • "/" expression
+   33           | "-" expression •
 
-    "id"     desplazar e ir al estado 36
-    "const"  desplazar e ir al estado 37
-    "-"      desplazar e ir al estado 38
-    "("      desplazar e ir al estado 39
-
-    expression  ir al estado 67
+    $default  reduce usando la regla 33 (expression)
 
 
 Estado 56
 
-   30 expression: expression "*" • expression
+   29 expression: expression • "+" expression
+   30           | expression • "-" expression
+   31           | expression • "*" expression
+   32           | expression • "/" expression
+   34           | "(" expression • ")"
 
-    "id"     desplazar e ir al estado 36
-    "const"  desplazar e ir al estado 37
-    "-"      desplazar e ir al estado 38
-    "("      desplazar e ir al estado 39
-
-    expression  ir al estado 68
+    "+"  desplazar e ir al estado 57
+    "-"  desplazar e ir al estado 58
+    "*"  desplazar e ir al estado 59
+    "/"  desplazar e ir al estado 60
+    ")"  desplazar e ir al estado 69
 
 
 Estado 57
 
-   31 expression: expression "/" • expression
+   29 expression: expression "+" • expression
 
-    "id"     desplazar e ir al estado 36
-    "const"  desplazar e ir al estado 37
-    "-"      desplazar e ir al estado 38
-    "("      desplazar e ir al estado 39
+    "id"     desplazar e ir al estado 38
+    "const"  desplazar e ir al estado 39
+    "-"      desplazar e ir al estado 40
+    "("      desplazar e ir al estado 41
 
-    expression  ir al estado 69
+    expression  ir al estado 70
 
 
 Estado 58
+
+   30 expression: expression "-" • expression
+
+    "id"     desplazar e ir al estado 38
+    "const"  desplazar e ir al estado 39
+    "-"      desplazar e ir al estado 40
+    "("      desplazar e ir al estado 41
+
+    expression  ir al estado 71
+
+
+Estado 59
+
+   31 expression: expression "*" • expression
+
+    "id"     desplazar e ir al estado 38
+    "const"  desplazar e ir al estado 39
+    "-"      desplazar e ir al estado 40
+    "("      desplazar e ir al estado 41
+
+    expression  ir al estado 72
+
+
+Estado 60
+
+   32 expression: expression "/" • expression
+
+    "id"     desplazar e ir al estado 38
+    "const"  desplazar e ir al estado 39
+    "-"      desplazar e ir al estado 40
+    "("      desplazar e ir al estado 41
+
+    expression  ir al estado 73
+
+
+Estado 61
 
    14 statement: "id" "=" expression ";" •
 
     $default  reduce usando la regla 14 (statement)
 
 
-Estado 59
+Estado 62
 
    16 statement: "if" "(" expression ")" • statement else_part
 
@@ -724,12 +757,13 @@ Estado 59
     "while"  desplazar e ir al estado 16
     "print"  desplazar e ir al estado 17
     "read"   desplazar e ir al estado 18
-    "{"      desplazar e ir al estado 19
+    "do"     desplazar e ir al estado 19
+    "{"      desplazar e ir al estado 20
 
-    statement  ir al estado 70
+    statement  ir al estado 74
 
 
-Estado 60
+Estado 63
 
    17 statement: "while" "(" expression ")" • statement
 
@@ -738,173 +772,216 @@ Estado 60
     "while"  desplazar e ir al estado 16
     "print"  desplazar e ir al estado 17
     "read"   desplazar e ir al estado 18
-    "{"      desplazar e ir al estado 19
+    "do"     desplazar e ir al estado 19
+    "{"      desplazar e ir al estado 20
 
-    statement  ir al estado 71
-
-
-Estado 61
-
-   18 statement: "print" "(" print_list ")" • ";"
-
-    ";"  desplazar e ir al estado 72
-
-
-Estado 62
-
-   23 print_list: print_list "," • print_item
-
-    "id"      desplazar e ir al estado 36
-    "string"  desplazar e ir al estado 43
-    "const"   desplazar e ir al estado 37
-    "-"       desplazar e ir al estado 38
-    "("       desplazar e ir al estado 39
-
-    print_item  ir al estado 73
-    expression  ir al estado 46
-
-
-Estado 63
-
-   19 statement: "read" "(" read_list ")" • ";"
-
-    ";"  desplazar e ir al estado 74
+    statement  ir al estado 75
 
 
 Estado 64
 
-   27 read_list: read_list "," • "id"
+   19 statement: "print" "(" print_list ")" • ";"
 
-    "id"  desplazar e ir al estado 75
+    ";"  desplazar e ir al estado 76
 
 
 Estado 65
 
-   33 expression: "(" expression ")" •
+   24 print_list: print_list "," • print_item
 
-    $default  reduce usando la regla 33 (expression)
+    "id"      desplazar e ir al estado 38
+    "string"  desplazar e ir al estado 45
+    "const"   desplazar e ir al estado 39
+    "-"       desplazar e ir al estado 40
+    "("       desplazar e ir al estado 41
+
+    print_item  ir al estado 77
+    expression  ir al estado 48
 
 
 Estado 66
 
-   28 expression: expression • "+" expression
-   28           | expression "+" expression •
-   29           | expression • "-" expression
-   30           | expression • "*" expression
-   31           | expression • "/" expression
+   20 statement: "read" "(" read_list ")" • ";"
 
-    "*"  desplazar e ir al estado 56
-    "/"  desplazar e ir al estado 57
-
-    $default  reduce usando la regla 28 (expression)
+    ";"  desplazar e ir al estado 78
 
 
 Estado 67
 
-   28 expression: expression • "+" expression
-   29           | expression • "-" expression
-   29           | expression "-" expression •
-   30           | expression • "*" expression
-   31           | expression • "/" expression
+   28 read_list: read_list "," • "id"
 
-    "*"  desplazar e ir al estado 56
-    "/"  desplazar e ir al estado 57
-
-    $default  reduce usando la regla 29 (expression)
+    "id"  desplazar e ir al estado 79
 
 
 Estado 68
 
-   28 expression: expression • "+" expression
-   29           | expression • "-" expression
-   30           | expression • "*" expression
-   30           | expression "*" expression •
-   31           | expression • "/" expression
+   18 statement: "do" statement "while" "(" • expression ")" ";"
 
-    $default  reduce usando la regla 30 (expression)
+    "id"     desplazar e ir al estado 38
+    "const"  desplazar e ir al estado 39
+    "-"      desplazar e ir al estado 40
+    "("      desplazar e ir al estado 41
+
+    expression  ir al estado 80
 
 
 Estado 69
 
-   28 expression: expression • "+" expression
-   29           | expression • "-" expression
-   30           | expression • "*" expression
-   31           | expression • "/" expression
-   31           | expression "/" expression •
+   34 expression: "(" expression ")" •
 
-    $default  reduce usando la regla 31 (expression)
+    $default  reduce usando la regla 34 (expression)
 
 
 Estado 70
 
-   16 statement: "if" "(" expression ")" statement • else_part
+   29 expression: expression • "+" expression
+   29           | expression "+" expression •
+   30           | expression • "-" expression
+   31           | expression • "*" expression
+   32           | expression • "/" expression
 
-    "else"  desplazar e ir al estado 76
+    "*"  desplazar e ir al estado 59
+    "/"  desplazar e ir al estado 60
 
-    "else"    [reduce usando la regla 20 (else_part)]
-    $default  reduce usando la regla 20 (else_part)
-
-    else_part  ir al estado 77
+    $default  reduce usando la regla 29 (expression)
 
 
 Estado 71
+
+   29 expression: expression • "+" expression
+   30           | expression • "-" expression
+   30           | expression "-" expression •
+   31           | expression • "*" expression
+   32           | expression • "/" expression
+
+    "*"  desplazar e ir al estado 59
+    "/"  desplazar e ir al estado 60
+
+    $default  reduce usando la regla 30 (expression)
+
+
+Estado 72
+
+   29 expression: expression • "+" expression
+   30           | expression • "-" expression
+   31           | expression • "*" expression
+   31           | expression "*" expression •
+   32           | expression • "/" expression
+
+    $default  reduce usando la regla 31 (expression)
+
+
+Estado 73
+
+   29 expression: expression • "+" expression
+   30           | expression • "-" expression
+   31           | expression • "*" expression
+   32           | expression • "/" expression
+   32           | expression "/" expression •
+
+    $default  reduce usando la regla 32 (expression)
+
+
+Estado 74
+
+   16 statement: "if" "(" expression ")" statement • else_part
+
+    "else"  desplazar e ir al estado 81
+
+    "else"    [reduce usando la regla 21 (else_part)]
+    $default  reduce usando la regla 21 (else_part)
+
+    else_part  ir al estado 82
+
+
+Estado 75
 
    17 statement: "while" "(" expression ")" statement •
 
     $default  reduce usando la regla 17 (statement)
 
 
-Estado 72
+Estado 76
 
-   18 statement: "print" "(" print_list ")" ";" •
-
-    $default  reduce usando la regla 18 (statement)
-
-
-Estado 73
-
-   23 print_list: print_list "," print_item •
-
-    $default  reduce usando la regla 23 (print_list)
-
-
-Estado 74
-
-   19 statement: "read" "(" read_list ")" ";" •
+   19 statement: "print" "(" print_list ")" ";" •
 
     $default  reduce usando la regla 19 (statement)
 
 
-Estado 75
+Estado 77
 
-   27 read_list: read_list "," "id" •
+   24 print_list: print_list "," print_item •
 
-    $default  reduce usando la regla 27 (read_list)
+    $default  reduce usando la regla 24 (print_list)
 
 
-Estado 76
+Estado 78
 
-   21 else_part: "else" • statement
+   20 statement: "read" "(" read_list ")" ";" •
+
+    $default  reduce usando la regla 20 (statement)
+
+
+Estado 79
+
+   28 read_list: read_list "," "id" •
+
+    $default  reduce usando la regla 28 (read_list)
+
+
+Estado 80
+
+   18 statement: "do" statement "while" "(" expression • ")" ";"
+   29 expression: expression • "+" expression
+   30           | expression • "-" expression
+   31           | expression • "*" expression
+   32           | expression • "/" expression
+
+    "+"  desplazar e ir al estado 57
+    "-"  desplazar e ir al estado 58
+    "*"  desplazar e ir al estado 59
+    "/"  desplazar e ir al estado 60
+    ")"  desplazar e ir al estado 83
+
+
+Estado 81
+
+   22 else_part: "else" • statement
 
     "id"     desplazar e ir al estado 14
     "if"     desplazar e ir al estado 15
     "while"  desplazar e ir al estado 16
     "print"  desplazar e ir al estado 17
     "read"   desplazar e ir al estado 18
-    "{"      desplazar e ir al estado 19
+    "do"     desplazar e ir al estado 19
+    "{"      desplazar e ir al estado 20
 
-    statement  ir al estado 78
+    statement  ir al estado 84
 
 
-Estado 77
+Estado 82
 
    16 statement: "if" "(" expression ")" statement else_part •
 
     $default  reduce usando la regla 16 (statement)
 
 
-Estado 78
+Estado 83
 
-   21 else_part: "else" statement •
+   18 statement: "do" statement "while" "(" expression ")" • ";"
 
-    $default  reduce usando la regla 21 (else_part)
+    ";"  desplazar e ir al estado 85
+
+
+Estado 84
+
+   22 else_part: "else" statement •
+
+    $default  reduce usando la regla 22 (else_part)
+
+
+Estado 85
+
+   18 statement: "do" statement "while" "(" expression ")" ";" •
+
+    $default  reduce usando la regla 18 (statement)

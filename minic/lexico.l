@@ -28,6 +28,7 @@ ESCAPE \\\*|\\\\|\\\"|\\[ntr]
 "if"                            {return IF; }
 "else"                          {return ELSE; }
 "while"                         {return WHILE; }
+"do"                            {return DO; }
 "read"                          {return READ; }
 "{"                             {return LLAVI; }
 "}"                             {return LLAVD; }

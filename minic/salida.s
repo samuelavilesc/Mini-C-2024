@@ -23,38 +23,38 @@ add $t0,$t0,$t1
 li $t1,2
 sub $t0,$t0,$t1
 sw $t0,_c
-li $v0,4
 la $a0,$str1
+li $v0,4
 syscall
 lw $t0,_a
 beqz $t0,etiq5
-li $v0,4
 la $a0,$str2
-syscall
 li $v0,4
+syscall
 la $a0,$str3
+li $v0,4
 syscall
 b etiq6
 etiq5:
 lw $t1,_b
 beqz $t1,etiq3
-li $v0,4
 la $a0,$str4
+li $v0,4
 syscall
 b etiq4
 etiq3:
 etiq1:
 lw $t2,_c
 beqz $t2,etiq2
-li $v0,4
 la $a0,$str5
+li $v0,4
 syscall
 lw $t3,_c
 li $v0,1
 move $a0,$t3
 syscall
-li $v0,4
 la $a0,$str6
+li $v0,4
 syscall
 lw $t3,_c
 li $t4,2
@@ -66,11 +66,11 @@ b etiq1
 etiq2:
 etiq4:
 etiq6:
-li $v0,4
 la $a0,$str7
-syscall
 li $v0,4
+syscall
 la $a0,$str8
+li $v0,4
 syscall
 li $v0, 10
 syscall
