@@ -24,16 +24,16 @@ syscall
 li $v0,4
 la $a0,$str2
 syscall
-lw $t2,_a
-beqz $t2,etiq1
-b etiq2
-etiq1:
+lw $t1,_a
+beqz $t1,etiq1
 li $v0,4
 la $a0,$str3
 syscall
-etiq2:
+b etiq2
+etiq1:
 li $v0,4
 la $a0,$str4
 syscall
+etiq2:
 li $v0, 10
 syscall

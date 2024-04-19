@@ -558,9 +558,9 @@ static const yytype_int8 yytranslate[] =
 static const yytype_int16 yyrline[] =
 {
        0,    90,    90,    90,    99,   100,   100,   101,   101,   103,
-     104,   106,   107,   109,   114,   121,   135,   136,   170,   171,
-     172,   174,   175,   177,   178,   184,   205,   228,   229,   231,
-     245,   259,   273,   287,   299,   300,   312
+     104,   106,   107,   109,   114,   121,   135,   136,   169,   170,
+     171,   173,   174,   176,   177,   183,   204,   227,   228,   230,
+     244,   258,   272,   286,   298,   299,   311
 };
 #endif
 
@@ -1559,90 +1559,89 @@ yyreduce:
   case 17: /* statement: "if" "(" expression ")" statement else_part  */
 #line 136 "sintactico.y"
                                                         {
-          (yyval.codigo) = creaLC();
+          (yyval.codigo) = (yyvsp[-3].codigo);
           Operacion op;
-          op.op = "lw";
-          op.res = obtenerReg();
-          op.arg1 = recuperaResLC((yyvsp[-3].codigo));
-          op.arg2 = NULL;
-          insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
-          char* etiq1 = nuevaEtiqueta();
-          char* etiq2 = nuevaEtiqueta();
+          //op.op = "lw";
+          //op.res = obtenerReg();
+          //op.arg1 = recuperaResLC($3);
+          //op.arg2 = NULL;
+          //insertaLC($$,finalLC($$),op);
+          char* etiqEndIf = nuevaEtiqueta();
+          char* etiqElse = nuevaEtiqueta(); 
           op.op = "beqz";
           op.res = recuperaResLC((yyvsp[-3].codigo));
-          op.arg1 = etiq1;
+          op.arg1 = etiqEndIf;
           op.arg2 = NULL;
           insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
+          concatenaLC((yyval.codigo),(yyvsp[-1].codigo));
           op.op = "b";
-          op.res = etiq2;
+          op.res = etiqElse;
           op.arg1 = op.arg2 = NULL;
           insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
-          op.op = concatena(etiq1,":");
-          op.res = op.arg1 = op.arg2 = NULL;
-          insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
-          concatenaLC((yyval.codigo),(yyvsp[-1].codigo));
-          op.op = concatena(etiq2,":");
+          op.op = concatena(etiqEndIf,":");
           op.res = op.arg1 = op.arg2 = NULL;
           insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
           if((yyvsp[0].codigo)!=NULL){ 
             concatenaLC((yyval.codigo),(yyvsp[0].codigo));
             liberaLC((yyvsp[0].codigo));
           }
+          op.op = concatena(etiqElse,":");
+          op.res = op.arg1 = op.arg2 = NULL;
+          insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
           liberarReg(recuperaResLC((yyvsp[-3].codigo)));
-          liberaLC((yyvsp[-3].codigo));
           liberaLC((yyvsp[-1].codigo));
          }
-#line 1596 "sintactico.tab.c"
+#line 1595 "sintactico.tab.c"
     break;
 
   case 18: /* statement: "while" "(" expression ")" statement  */
-#line 170 "sintactico.y"
+#line 169 "sintactico.y"
                                                       {}
-#line 1602 "sintactico.tab.c"
+#line 1601 "sintactico.tab.c"
     break;
 
   case 19: /* statement: "print" "(" print_list ")" ";"  */
-#line 171 "sintactico.y"
+#line 170 "sintactico.y"
                                                 {(yyval.codigo) = (yyvsp[-2].codigo);}
-#line 1608 "sintactico.tab.c"
+#line 1607 "sintactico.tab.c"
     break;
 
   case 20: /* statement: "read" "(" read_list ")" ";"  */
-#line 172 "sintactico.y"
+#line 171 "sintactico.y"
                                               {}
-#line 1614 "sintactico.tab.c"
+#line 1613 "sintactico.tab.c"
     break;
 
   case 21: /* else_part: %empty  */
-#line 174 "sintactico.y"
+#line 173 "sintactico.y"
                         {(yyval.codigo) = NULL;}
-#line 1620 "sintactico.tab.c"
+#line 1619 "sintactico.tab.c"
     break;
 
   case 22: /* else_part: "else" statement  */
-#line 175 "sintactico.y"
+#line 174 "sintactico.y"
                                       {(yyval.codigo)=(yyvsp[0].codigo);}
-#line 1626 "sintactico.tab.c"
+#line 1625 "sintactico.tab.c"
     break;
 
   case 23: /* print_list: print_item  */
-#line 177 "sintactico.y"
+#line 176 "sintactico.y"
                               {(yyval.codigo)=(yyvsp[0].codigo);}
-#line 1632 "sintactico.tab.c"
+#line 1631 "sintactico.tab.c"
     break;
 
   case 24: /* print_list: print_list "," print_item  */
-#line 178 "sintactico.y"
+#line 177 "sintactico.y"
                                             {
             (yyval.codigo)=(yyvsp[-2].codigo);
             concatenaLC((yyval.codigo),(yyvsp[0].codigo));
             liberaLC((yyvsp[0].codigo));
           }
-#line 1642 "sintactico.tab.c"
+#line 1641 "sintactico.tab.c"
     break;
 
   case 25: /* print_item: expression  */
-#line 184 "sintactico.y"
+#line 183 "sintactico.y"
                               {
                           if(analisis_ok()){
                             (yyval.codigo) = (yyvsp[0].codigo);
@@ -1664,11 +1663,11 @@ yyreduce:
                             
                           }          
                           }
-#line 1668 "sintactico.tab.c"
+#line 1667 "sintactico.tab.c"
     break;
 
   case 26: /* print_item: "string"  */
-#line 205 "sintactico.y"
+#line 204 "sintactico.y"
                           {
                           insertarString((yyvsp[0].cadena),numStr);
                           if(analisis_ok()){
@@ -1691,23 +1690,23 @@ yyreduce:
                             insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
                           }          
                           }
-#line 1695 "sintactico.tab.c"
+#line 1694 "sintactico.tab.c"
     break;
 
   case 27: /* read_list: "id"  */
-#line 228 "sintactico.y"
+#line 227 "sintactico.y"
                     {buscarID((yyvsp[0].cadena),1);}
-#line 1701 "sintactico.tab.c"
+#line 1700 "sintactico.tab.c"
     break;
 
   case 28: /* read_list: read_list "," "id"  */
-#line 229 "sintactico.y"
+#line 228 "sintactico.y"
                                     {buscarID((yyvsp[0].cadena),1);}
-#line 1707 "sintactico.tab.c"
+#line 1706 "sintactico.tab.c"
     break;
 
   case 29: /* expression: expression "+" expression  */
-#line 231 "sintactico.y"
+#line 230 "sintactico.y"
                                             {
                                             if(analisis_ok()){
                                               (yyval.codigo)=(yyvsp[-2].codigo);
@@ -1722,11 +1721,11 @@ yyreduce:
                                               liberarReg(op.arg2);
                                             }
                                             }
-#line 1726 "sintactico.tab.c"
+#line 1725 "sintactico.tab.c"
     break;
 
   case 30: /* expression: expression "-" expression  */
-#line 245 "sintactico.y"
+#line 244 "sintactico.y"
                                             {
                                             if(analisis_ok()){
                                               (yyval.codigo)=(yyvsp[-2].codigo);
@@ -1741,11 +1740,11 @@ yyreduce:
                                               liberarReg(op.arg2);
                                             }
                                             }
-#line 1745 "sintactico.tab.c"
+#line 1744 "sintactico.tab.c"
     break;
 
   case 31: /* expression: expression "*" expression  */
-#line 259 "sintactico.y"
+#line 258 "sintactico.y"
                                             {
                                             if(analisis_ok()){
                                               (yyval.codigo)=(yyvsp[-2].codigo);
@@ -1760,11 +1759,11 @@ yyreduce:
                                               liberarReg(op.arg2);
                                             }
                                             }
-#line 1764 "sintactico.tab.c"
+#line 1763 "sintactico.tab.c"
     break;
 
   case 32: /* expression: expression "/" expression  */
-#line 273 "sintactico.y"
+#line 272 "sintactico.y"
                                             {
                                              if(analisis_ok()){
                                               (yyval.codigo)=(yyvsp[-2].codigo);
@@ -1779,11 +1778,11 @@ yyreduce:
                                               liberarReg(op.arg2);
                                             }
                                             }
-#line 1783 "sintactico.tab.c"
+#line 1782 "sintactico.tab.c"
     break;
 
   case 33: /* expression: "-" expression  */
-#line 287 "sintactico.y"
+#line 286 "sintactico.y"
                                               {
                                               //operacion neg $tx,$ty pone en tx el negativo de ty
                                               if(analisis_ok()){
@@ -1796,17 +1795,17 @@ yyreduce:
                                                 insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
                                                 }
                                               }
-#line 1800 "sintactico.tab.c"
+#line 1799 "sintactico.tab.c"
     break;
 
   case 34: /* expression: "(" expression ")"  */
-#line 299 "sintactico.y"
+#line 298 "sintactico.y"
                                     { (yyval.codigo) = (yyvsp[-1].codigo); }
-#line 1806 "sintactico.tab.c"
+#line 1805 "sintactico.tab.c"
     break;
 
   case 35: /* expression: "const"  */
-#line 300 "sintactico.y"
+#line 299 "sintactico.y"
                       {
                       if(analisis_ok){
                         (yyval.codigo)=creaLC();
@@ -1819,11 +1818,11 @@ yyreduce:
                         guardaResLC((yyval.codigo),op.res);
                       }
                       }
-#line 1823 "sintactico.tab.c"
+#line 1822 "sintactico.tab.c"
     break;
 
   case 36: /* expression: "id"  */
-#line 312 "sintactico.y"
+#line 311 "sintactico.y"
                     {buscarID((yyvsp[0].cadena),0);
                       if(analisis_ok){
                         (yyval.codigo)=creaLC();
@@ -1837,11 +1836,11 @@ yyreduce:
                       }
                       
                     }
-#line 1841 "sintactico.tab.c"
+#line 1840 "sintactico.tab.c"
     break;
 
 
-#line 1845 "sintactico.tab.c"
+#line 1844 "sintactico.tab.c"
 
       default: break;
     }
@@ -2065,7 +2064,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 326 "sintactico.y"
+#line 325 "sintactico.y"
       
 
 void yyerror(const char* msg) {

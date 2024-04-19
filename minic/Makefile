@@ -1,5 +1,5 @@
 sintactico : lex.yy.c main.c sintactico.tab.c listaSimbolos.c listaCodigo.c
-	gcc -g main.c lex.yy.c sintactico.tab.c listaSimbolos.c listaCodigo.c -lfl -o sintactico
+	gcc -g main.c lex.yy.c sintactico.tab.c listaSimbolos.c listaCodigo.c -ll -o sintactico
 
 sintactico.tab.c sintactico.tab.h: sintactico.y
 	bison -d -v sintactico.y

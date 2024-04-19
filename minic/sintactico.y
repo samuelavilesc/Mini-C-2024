@@ -134,37 +134,36 @@ statement: id "=" expression ";"        {buscarID($1,1);
                                         }
          | "{" statement_list "}"       {}
          | "if" "(" expression ")" statement else_part  {
-          $$ = creaLC();
+          $$ = $3;
           Operacion op;
-          op.op = "lw";
-          op.res = obtenerReg();
-          op.arg1 = recuperaResLC($3);
-          op.arg2 = NULL;
-          insertaLC($$,finalLC($$),op);
-          char* etiq1 = nuevaEtiqueta();
-          char* etiq2 = nuevaEtiqueta();
+          //op.op = "lw";
+          //op.res = obtenerReg();
+          //op.arg1 = recuperaResLC($3);
+          //op.arg2 = NULL;
+          //insertaLC($$,finalLC($$),op);
+          char* etiqEndIf = nuevaEtiqueta();
+          char* etiqElse = nuevaEtiqueta(); 
           op.op = "beqz";
           op.res = recuperaResLC($3);
-          op.arg1 = etiq1;
+          op.arg1 = etiqEndIf;
           op.arg2 = NULL;
           insertaLC($$,finalLC($$),op);
+          concatenaLC($$,$5);
           op.op = "b";
-          op.res = etiq2;
+          op.res = etiqElse;
           op.arg1 = op.arg2 = NULL;
           insertaLC($$,finalLC($$),op);
-          op.op = concatena(etiq1,":");
-          op.res = op.arg1 = op.arg2 = NULL;
-          insertaLC($$,finalLC($$),op);
-          concatenaLC($$,$5);
-          op.op = concatena(etiq2,":");
+          op.op = concatena(etiqEndIf,":");
           op.res = op.arg1 = op.arg2 = NULL;
           insertaLC($$,finalLC($$),op);
           if($6!=NULL){ 
             concatenaLC($$,$6);
             liberaLC($6);
           }
+          op.op = concatena(etiqElse,":");
+          op.res = op.arg1 = op.arg2 = NULL;
+          insertaLC($$,finalLC($$),op);
           liberarReg(recuperaResLC($3));
-          liberaLC($3);
           liberaLC($5);
          }
          |"while" "(" expression ")" statement        {}
