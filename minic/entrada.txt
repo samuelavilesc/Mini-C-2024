@@ -1,28 +1,14 @@
 prueba () {
     const a = 1;
     const b = 2 * 3;
-    var c;
-    var d = 5 + 2, e = 9 / 3;
+    var c,d,e;
 
     print ("Inicio del programa\n");
 
-    print ("Introduce el valor de \"c\":\n");
-    read (c);
-
-    if (c) print ("\"c\" no era nulo.", "\n");
-    else print ("\"c\" si era nulo.", "\n");
-
-    /* Imprimir d */
-    while (d) {
-        print ("\"d\" vale", d, "\n");
-        d = d - 1;
-    }
-
-    /* Imprimir e */
-    do {
-        print ("\"e\" vale", e, "\n");
-        e = e - 1;
-    } while(e);
-    
+    print ("Introduce el valor de \"c\" y de \"d\" :\n");
+    read (c,d);
+    e=c*d/(a+b);
+    print("Valor de c y de d \n",c,"\n",d,"\n");
+    print(e,"\n");
 	print ("Final","\n");
 }

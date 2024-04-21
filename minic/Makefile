@@ -10,5 +10,5 @@ lex.yy.c: lexico.l sintactico.tab.h
 clean:
 	rm -f sintactico sintactico.tab.c sintactico.tab.h lex.yy.cc
 
-run: sintactico pruebamc.txt
-	./sintactico pruebamc.txt > salida.s
+run: sintactico entrada.txt
+	./sintactico entrada.txt > salida.s

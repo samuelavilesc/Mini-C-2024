@@ -69,9 +69,7 @@
 %token LLAVD "}"
 
 /* Tipo de dato de los no terminales */
-%type <codigo> expression statement statement_list declarations identifier_list identifier
-%type <codigo> print_item print_list read_list
-%type <codigo> else_part
+%type <codigo> expression statement statement_list declarations identifier_list identifier print_item print_list read_list else_part
 
 %define parse.error verbose
 %define parse.trace
@@ -100,20 +98,35 @@ program: {ls = creaLS(); inicializarReg();}
         ;       
 declarations:     %empty        {$$=creaLC();} 
             | declarations var {t=VARIABLE;} identifier_list ";"        {
-                $$=$1;
-                concatenaLC($$,$4);
-                liberaLC($4);
+                if(analisis_ok()){
+                    $$=$1;
+                    concatenaLC($$,$4);
+                    liberaLC($4);
+                }
             }
             | declarations CONST{t=CONSTANTE;} identifier_list ";"        {
-                $$=$1;
-                concatenaLC($$,$4);
-                liberaLC($4);
+                if(analisis_ok()){
+                  $$=$1;
+                  concatenaLC($$,$4);
+                  liberaLC($4);
+                }
+               
             }
-            ;       
-identifier_list: identifier       {$$=$1;}
-               | identifier_list "," identifier       {$$=$1;
+            | declarations var error ";" {$$=creaLC();}
+            | declarations CONST error ";" {$$=creaLC();}
+            ;
+
+identifier_list: identifier       {
+  if(analisis_ok()){
+    $$=$1;
+  }
+  }
+               | identifier_list "," identifier       {
+                                                      if(analisis_ok()){
+                                                      $$=$1;
                                                       concatenaLC($$,$3);
                                                       liberaLC($3);
+                                                      }
                                                       }
                ;       
 identifier: id        {insertaID($1,0);
@@ -161,7 +174,12 @@ statement: id "=" expression ";"        {buscarID($1,1);
                                           liberarReg(op.res);
                                         }
                                         }
-         | "{" statement_list "}"       {$$=$2;}
+         | "{" statement_list "}"       {
+                                          if(analisis_ok()){
+                                            $$ = $2;
+                                          }
+                                          
+                                        }
          | "if" "(" expression ")" statement else_part  {
           if(analisis_ok()){
           $$ = $3;
@@ -174,10 +192,12 @@ statement: id "=" expression ";"        {buscarID($1,1);
           op.arg2 = NULL;
           insertaLC($$,finalLC($$),op);
           concatenaLC($$,$5);
-          op.op = "b";
-          op.res = etiqElse;
-          op.arg1 = op.arg2 = NULL;
-          insertaLC($$,finalLC($$),op);
+          if($6!=NULL){
+            op.op = "b";
+            op.res = etiqElse;
+            op.arg1 = op.arg2 = NULL;
+            insertaLC($$,finalLC($$),op);
+          }
           op.op = concatena(etiqEndIf,":");
           op.res = op.arg1 = op.arg2 = NULL;
           insertaLC($$,finalLC($$),op);
@@ -216,6 +236,8 @@ statement: id "=" expression ";"        {buscarID($1,1);
           op.res = op.arg1 = op.arg2 = NULL;
           insertaLC($$,finalLC($$),op);
           liberarReg(recuperaResLC($3));
+          liberaLC($3);
+          liberaLC($5);
          }
          }
          | "do" statement "while" "(" expression ")" ";" {
@@ -238,17 +260,23 @@ statement: id "=" expression ";"        {buscarID($1,1);
           liberaLC($5);
           }
          }
-         | "print" "(" print_list ")" ";"       {$$ = $3;}
-         | "read" "(" read_list ")" ";"       {$$=$3;}
+         | "print" "(" print_list ")" ";"       {if(analisis_ok()) $$ = $3;}
+         | "read" "(" read_list ")" ";"       {if(analisis_ok()) $$=$3;}
          ;        
 else_part:  %empty      {$$ = NULL;}
-            | "else" statement        {$$=$2;}
+            | "else" statement        {
+              if(analisis_ok()){
+                $$=$2;
+              }
+              }
             ;
-print_list: print_item        {$$=$1;}
+print_list: print_item        {if(analisis_ok()) $$=$1;}
           | print_list "," print_item       {
+            if(analisis_ok()){
             $$=$1;
             concatenaLC($$,$3);
             liberaLC($3);
+            }
           }
           ;      
 print_item: expression        {
@@ -320,7 +348,22 @@ read_list: id       {buscarID($1,1);
                                     buscarID($3,1);
                                     if(analisis_ok()){
                                       $$=$1;
-                                    }
+                                      Operacion op;
+                                      op.op="li";
+                                      op.res = "$v0";
+                                      op.arg1="5";
+                                      op.arg2=NULL;
+                                      insertaLC($$,finalLC($$),op);
+                                      op.op="syscall";
+                                      op.res=op.arg1=op.arg2=NULL;
+                                      insertaLC($$,finalLC($$),op);
+                                      op.op="sw";
+                                      op.res="$v0";
+                                      op.arg1=concatena("_",$3);
+                                      op.arg2=NULL;
+                                      insertaLC($$,finalLC($$),op);
+                                      liberarReg(op.res);
+                                      }
                                     }
           ;       
 expression: expression "+" expression       {
@@ -516,17 +559,13 @@ void imprimirLC(ListaC codigo){
   Operacion oper;
  while (p != finalLC(codigo)) {
   oper = recuperaLC(codigo,p);
-  if(!strcmp(oper.op,"etiq")){
-    printf("%s:",oper.res);
-  }else{
-
   printf("%s",oper.op);
   if (oper.res) printf(" %s",oper.res);
   if (oper.arg1) printf(",%s",oper.arg1);
   if (oper.arg2) printf(",%s",oper.arg2);
   printf("\n");
   p = siguienteLC(codigo,p);
- }
+
 }
  printf("li $v0, 10\nsyscall\n");
 }
