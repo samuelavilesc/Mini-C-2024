@@ -244,7 +244,7 @@ statement: id "=" expression ";"        {buscarID($1,1);
          }
          }
          | "for" "(" id "=" expression ":" expression ")" statement {
-          buscarID($3,0);
+          buscarID($3,1);
           if(analisis_ok()){
           $$ = $5;
           Operacion op;
