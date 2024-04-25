@@ -11,4 +11,7 @@ prueba () {
     print("Valor de c y de d \n",c,"\n",d,"\n");
     print(e,"\n");
 	print ("Final","\n");
+    for(c=1:10){
+        print(c);
+    }
 }

@@ -71,5 +71,19 @@ syscall
 la $a0,$str8
 li $v0,4
 syscall
+li $t0,1
+sw $t0,_c
+etiq1:
+lw $t0,_c
+li $t1,10
+beq $t0,$t1,etiq2
+lw $t2,_c
+li $v0,1
+move $a0,$t2
+syscall
+addi $t0,$t0,1
+sw $t0,_c
+b etiq1
+etiq2:
 li $v0, 10
 syscall

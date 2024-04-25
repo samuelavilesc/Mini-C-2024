@@ -56,6 +56,7 @@
 %token PRINT "print" 
 %token READ "read"
 %token DO "do"
+%token FOR "for"
 %token SUMA "+"
 %token REST "-"
 %token PROD "*"
@@ -67,6 +68,7 @@
 %token COMA ","
 %token LLAVI "{"
 %token LLAVD "}"
+%token DOSP ":"
 
 /* Tipo de dato de los no terminales */
 %type <codigo> expression statement statement_list declarations identifier_list identifier print_item print_list read_list else_part
@@ -174,6 +176,7 @@ statement: id "=" expression ";"        {buscarID($1,1);
                                           liberarReg(op.res);
                                         }
                                         }
+         | error ";" {$$=creaLC();}
          | "{" statement_list "}"       {
                                           if(analisis_ok()){
                                             $$ = $2;
@@ -240,6 +243,54 @@ statement: id "=" expression ";"        {buscarID($1,1);
           liberaLC($5);
          }
          }
+         | "for" "(" id "=" expression ":" expression ")" statement {
+          buscarID($3,0);
+          if(analisis_ok()){
+          $$ = $5;
+          Operacion op;
+          char* etiqFor = nuevaEtiqueta();
+          char* etiqEndFor = nuevaEtiqueta();
+          op.op = "sw";
+          op.res = recuperaResLC($5);
+          op.arg1 = concatena("_",$3);
+          op.arg2 = NULL;
+          insertaLC($$,finalLC($$),op);
+          op.op = concatena(etiqFor,":");
+          op.res = op.arg1 = op.arg2 = NULL;
+          insertaLC($$,finalLC($$),op);
+          op.op = "lw";
+          op.res = recuperaResLC($5);
+          op.arg1 = concatena("_",$3);
+          op.arg2 = NULL;
+          insertaLC($$,finalLC($$),op);
+          concatenaLC($$,$7);
+          op.op = "beq";
+          op.res = recuperaResLC($5);
+          op.arg1 = recuperaResLC($7);
+          op.arg2 = etiqEndFor;
+          insertaLC($$,finalLC($$),op);
+          concatenaLC($$,$9);
+          //hacemos el incremento
+          op.op = "addi";
+          op.res = recuperaResLC($5);
+          op.arg1 = recuperaResLC($5);
+          op.arg2 = "1";
+          insertaLC($$,finalLC($$),op);
+          //lo guardamos en la variable global
+          op.op = "sw";
+          op.res = recuperaResLC($5);
+          op.arg1 = concatena("_",$3);
+          op.arg2 = NULL;
+          insertaLC($$,finalLC($$),op);
+          op.op = "b";
+          op.res = etiqFor;
+          op.arg1 = op.arg2 = NULL;
+          insertaLC($$,finalLC($$),op);
+          op.op = concatena(etiqEndFor,":");
+          op.res = op.arg1 = op.arg2 = NULL;
+          insertaLC($$,finalLC($$),op);
+          }
+          }
          | "do" statement "while" "(" expression ")" ";" {
           if(analisis_ok()){
           $$ = creaLC();

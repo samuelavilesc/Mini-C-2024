@@ -28,6 +28,7 @@ ESCAPE \\\*|\\\\|\\\"|\\[ntr]
 "if"                            {return IF; }
 "else"                          {return ELSE; }
 "while"                         {return WHILE; }
+"for"                         {return FOR; }
 "do"                            {return DO; }
 "read"                          {return READ; }
 "{"                             {return LLAVI; }
@@ -47,6 +48,7 @@ ESCAPE \\\*|\\\\|\\\"|\\[ntr]
                                     return NUME;} 
                                  else error_lexico("Entero demasiado largo"); }
 ";"                             {return PYCO; }
+":"                             {return DOSP; }
 ,                               {return COMA; }
 "("                             {return PARI; }
 ")"                             {return PARD; }
