@@ -52,6 +52,13 @@ ESCAPE \\\*|\\\\|\\\"|\\[ntr]
 ,                               {return COMA; }
 "("                             {return PARI; }
 ")"                             {return PARD; }
+"<"                             {return MENOR; }
+"<="                             {return MENORI; }
+">"                             {return MAYOR; }
+">="                             {return MAYORI; }
+"=="                             {return IGUALD; }
+"!="                             {return NOTIG; }
+
 "//".*                          {}
 "/*"                            {BEGIN(comentario); } 
 <comentario>"*/"                {BEGIN(INITIAL); }

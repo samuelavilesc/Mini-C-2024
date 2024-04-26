@@ -69,15 +69,22 @@
 %token LLAVI "{"
 %token LLAVD "}"
 %token DOSP ":"
+%token MENOR "<"
+%token MENORI "<="
+%token MAYOR ">"
+%token MAYORI ">="
+%token IGUALD "=="
+%token NOTIG "!="
 
 /* Tipo de dato de los no terminales */
-%type <codigo> expression statement statement_list declarations identifier_list identifier print_item print_list read_list else_part
+%type <codigo> expression statement statement_list declarations identifier_list identifier print_item print_list read_list else_part expr_rel
 
 %define parse.error verbose
 %define parse.trace
 /* precedencia y asociatividad de operadores */
 %left "+" "-"
 %left "*" "/"
+%nonassoc "<" ">" "<=" ">=" "==" "!="
 %precedence UMINUS /* precedencia para el operador unario - */
 /*%left precedencia izquierda
 %right precedencia derecha
@@ -94,6 +101,8 @@ program: {ls = creaLS(); inicializarReg();}
                 imprimeLS();
                 concatenaLC($6,$7);
                 imprimirLC($6); //la accion en mitad de la regla cuenta como simbolo
+                liberaLC($6);
+                liberaLC($7);
             }
             liberaLS(ls);
         }
@@ -176,14 +185,14 @@ statement: id "=" expression ";"        {buscarID($1,1);
                                           liberarReg(op.res);
                                         }
                                         }
-         | error ";" {$$=creaLC();}
+         | error ";" {$$=creaLC();      } //bison retrocede hasta el ultimo punto y coma encontrado y lo apila, despues continua con el analisis
          | "{" statement_list "}"       {
                                           if(analisis_ok()){
                                             $$ = $2;
                                           }
                                           
                                         }
-         | "if" "(" expression ")" statement else_part  {
+         | "if" "(" expr_rel ")" statement else_part  {
           if(analisis_ok()){
           $$ = $3;
           Operacion op;
@@ -215,7 +224,7 @@ statement: id "=" expression ";"        {buscarID($1,1);
           liberaLC($5);
          }
          }
-         |"while" "(" expression ")" statement        {
+         |"while" "(" expr_rel ")" statement        {
           if(analisis_ok()){
           $$ = creaLC();
           Operacion op;
@@ -243,7 +252,7 @@ statement: id "=" expression ";"        {buscarID($1,1);
           liberaLC($5);
          }
          }
-         | "for" "(" id "=" expression ":" expression ")" statement {
+         | "for" "(" id "=" expression ";" expr_rel ":" expression")" statement {
           buscarID($3,1);
           if(analisis_ok()){
           $$ = $5;
@@ -258,23 +267,19 @@ statement: id "=" expression ";"        {buscarID($1,1);
           op.op = concatena(etiqFor,":");
           op.res = op.arg1 = op.arg2 = NULL;
           insertaLC($$,finalLC($$),op);
-          op.op = "lw";
-          op.res = recuperaResLC($5);
-          op.arg1 = concatena("_",$3);
+          concatenaLC($$,$7);
+          op.op = "beqz";
+          op.res = recuperaResLC($7);
+          op.arg1 = etiqEndFor;
           op.arg2 = NULL;
           insertaLC($$,finalLC($$),op);
-          concatenaLC($$,$7);
-          op.op = "beq";
-          op.res = recuperaResLC($5);
-          op.arg1 = recuperaResLC($7);
-          op.arg2 = etiqEndFor;
-          insertaLC($$,finalLC($$),op);
+          concatenaLC($$,$11); //añadimos el statement
           concatenaLC($$,$9);
           //hacemos el incremento
-          op.op = "addi";
+          op.op = "add";
           op.res = recuperaResLC($5);
           op.arg1 = recuperaResLC($5);
-          op.arg2 = "1";
+          op.arg2 = recuperaResLC($9);
           insertaLC($$,finalLC($$),op);
           //lo guardamos en la variable global
           op.op = "sw";
@@ -289,9 +294,15 @@ statement: id "=" expression ";"        {buscarID($1,1);
           op.op = concatena(etiqEndFor,":");
           op.res = op.arg1 = op.arg2 = NULL;
           insertaLC($$,finalLC($$),op);
+          liberarReg(recuperaResLC($5));
+          liberarReg(recuperaResLC($7));
+          liberarReg(recuperaResLC($9));
+          liberaLC($7);
+          liberaLC($9);
+          liberaLC($11);
           }
           }
-         | "do" statement "while" "(" expression ")" ";" {
+         | "do" statement "while" "(" expr_rel ")" ";" {
           if(analisis_ok()){
           $$ = creaLC();
           Operacion op;
@@ -417,6 +428,92 @@ read_list: id       {buscarID($1,1);
                                       }
                                     }
           ;       
+expr_rel: expression "<" expression {
+                                      if(analisis_ok()){
+                                        $$=$1;
+                                        concatenaLC($$,$3);
+                                        Operacion op;
+                                        op.op="slt";
+                                        op.res=recuperaResLC($1);
+                                        op.arg1=recuperaResLC($1);
+                                        op.arg2=recuperaResLC($3);
+                                        insertaLC($$,finalLC($$),op);
+                                        liberaLC($3);
+                                        liberarReg(op.arg2);
+                                      }
+         }
+         | expression ">" expression {
+                                      if(analisis_ok()){
+                                        $$=$1;
+                                        concatenaLC($$,$3);
+                                        Operacion op;
+                                        op.op="sgt";
+                                        op.res=recuperaResLC($1);
+                                        op.arg1=recuperaResLC($1);
+                                        op.arg2=recuperaResLC($3);
+                                        insertaLC($$,finalLC($$),op);
+                                        liberaLC($3);
+                                        liberarReg(op.arg2);
+                                      }
+         }
+         
+         | expression "<=" expression {
+                                      if(analisis_ok()){
+                                        $$=$1;
+                                        concatenaLC($$,$3);
+                                        Operacion op;
+                                        op.op="sle";
+                                        op.res=recuperaResLC($1);
+                                        op.arg1=recuperaResLC($1);
+                                        op.arg2=recuperaResLC($3);
+                                        insertaLC($$,finalLC($$),op);
+                                        liberaLC($3);
+                                        liberarReg(op.arg2);
+                                      }
+         }
+         | expression ">=" expression {
+                                      if(analisis_ok()){
+                                        $$=$1;
+                                        concatenaLC($$,$3);
+                                        Operacion op;
+                                        op.op="sge";
+                                        op.res=recuperaResLC($1);
+                                        op.arg1=recuperaResLC($1);
+                                        op.arg2=recuperaResLC($3);
+                                        insertaLC($$,finalLC($$),op);
+                                        liberaLC($3);
+                                        liberarReg(op.arg2);
+                                      }
+         }
+         | expression "==" expression {
+                                      if(analisis_ok()){
+                                        $$=$1;
+                                        concatenaLC($$,$3);
+                                        Operacion op;
+                                        op.op="seq";
+                                        op.res=recuperaResLC($1);
+                                        op.arg1=recuperaResLC($1);
+                                        op.arg2=recuperaResLC($3);
+                                        insertaLC($$,finalLC($$),op);
+                                        liberaLC($3);
+                                        liberarReg(op.arg2);
+                                      }
+         }
+         | expression "!=" expression{
+                                      if(analisis_ok()){
+                                        $$=$1;
+                                        concatenaLC($$,$3);
+                                        Operacion op;
+                                        op.op="sne";
+                                        op.res=recuperaResLC($1);
+                                        op.arg1=recuperaResLC($1);
+                                        op.arg2=recuperaResLC($3);
+                                        insertaLC($$,finalLC($$),op);
+                                        liberaLC($3);
+                                        liberarReg(op.arg2);
+                                      }
+         }
+         
 expression: expression "+" expression       {
                                             if(analisis_ok()){
                                               $$=$1;
@@ -430,7 +527,7 @@ expression: expression "+" expression       {
                                               liberaLC($3);
                                               liberarReg(op.arg2);
                                             }
-                                            }
+}
          | expression "-" expression        {
                                             if(analisis_ok()){
                                               $$=$1;

@@ -157,22 +157,29 @@ enum yysymbol_kind_t
   YYSYMBOL_LLAVI = 24,                     /* "{"  */
   YYSYMBOL_LLAVD = 25,                     /* "}"  */
   YYSYMBOL_DOSP = 26,                      /* ":"  */
-  YYSYMBOL_UMINUS = 27,                    /* UMINUS  */
-  YYSYMBOL_YYACCEPT = 28,                  /* $accept  */
-  YYSYMBOL_program = 29,                   /* program  */
-  YYSYMBOL_30_1 = 30,                      /* $@1  */
-  YYSYMBOL_declarations = 31,              /* declarations  */
-  YYSYMBOL_32_2 = 32,                      /* $@2  */
-  YYSYMBOL_33_3 = 33,                      /* $@3  */
-  YYSYMBOL_identifier_list = 34,           /* identifier_list  */
-  YYSYMBOL_identifier = 35,                /* identifier  */
-  YYSYMBOL_statement_list = 36,            /* statement_list  */
-  YYSYMBOL_statement = 37,                 /* statement  */
-  YYSYMBOL_else_part = 38,                 /* else_part  */
-  YYSYMBOL_print_list = 39,                /* print_list  */
-  YYSYMBOL_print_item = 40,                /* print_item  */
-  YYSYMBOL_read_list = 41,                 /* read_list  */
-  YYSYMBOL_expression = 42                 /* expression  */
+  YYSYMBOL_MENOR = 27,                     /* "<"  */
+  YYSYMBOL_MENORI = 28,                    /* "<="  */
+  YYSYMBOL_MAYOR = 29,                     /* ">"  */
+  YYSYMBOL_MAYORI = 30,                    /* ">="  */
+  YYSYMBOL_IGUALD = 31,                    /* "=="  */
+  YYSYMBOL_NOTIG = 32,                     /* "!="  */
+  YYSYMBOL_UMINUS = 33,                    /* UMINUS  */
+  YYSYMBOL_YYACCEPT = 34,                  /* $accept  */
+  YYSYMBOL_program = 35,                   /* program  */
+  YYSYMBOL_36_1 = 36,                      /* $@1  */
+  YYSYMBOL_declarations = 37,              /* declarations  */
+  YYSYMBOL_38_2 = 38,                      /* $@2  */
+  YYSYMBOL_39_3 = 39,                      /* $@3  */
+  YYSYMBOL_identifier_list = 40,           /* identifier_list  */
+  YYSYMBOL_identifier = 41,                /* identifier  */
+  YYSYMBOL_statement_list = 42,            /* statement_list  */
+  YYSYMBOL_statement = 43,                 /* statement  */
+  YYSYMBOL_else_part = 44,                 /* else_part  */
+  YYSYMBOL_print_list = 45,                /* print_list  */
+  YYSYMBOL_print_item = 46,                /* print_item  */
+  YYSYMBOL_read_list = 47,                 /* read_list  */
+  YYSYMBOL_expr_rel = 48,                  /* expr_rel  */
+  YYSYMBOL_expression = 49                 /* expression  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -500,19 +507,19 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  3
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   140
+#define YYLAST   148
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  28
+#define YYNTOKENS  34
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  15
+#define YYNNTS  16
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  41
+#define YYNRULES  47
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  101
+#define YYNSTATES  116
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   282
+#define YYMAXUTOK   288
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -554,18 +561,18 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27
+      25,    26,    27,    28,    29,    30,    31,    32,    33
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    91,    91,    91,   101,   102,   102,   109,   109,   117,
-     118,   121,   126,   134,   139,   152,   157,   165,   179,   180,
-     186,   218,   246,   294,   314,   315,   317,   318,   324,   325,
-     333,   354,   377,   398,   420,   434,   448,   462,   476,   488,
-     489,   501
+       0,    98,    98,    98,   110,   111,   111,   118,   118,   126,
+     127,   130,   135,   143,   148,   161,   166,   174,   188,   189,
+     195,   227,   255,   305,   325,   326,   328,   329,   335,   336,
+     344,   365,   388,   409,   431,   445,   460,   474,   488,   502,
+     517,   531,   545,   559,   573,   585,   586,   598
 };
 #endif
 
@@ -585,9 +592,11 @@ static const char *const yytname[] =
   "\"const\"", "var", "CONST", "\"if\"", "\"else\"", "\"while\"",
   "\"print\"", "\"read\"", "\"do\"", "\"for\"", "\"+\"", "\"-\"", "\"*\"",
   "\"/\"", "\")\"", "\"(\"", "\";\"", "\"=\"", "\",\"", "\"{\"", "\"}\"",
-  "\":\"", "UMINUS", "$accept", "program", "$@1", "declarations", "$@2",
-  "$@3", "identifier_list", "identifier", "statement_list", "statement",
-  "else_part", "print_list", "print_item", "read_list", "expression", YY_NULLPTR
+  "\":\"", "\"<\"", "\"<=\"", "\">\"", "\">=\"", "\"==\"", "\"!=\"",
+  "UMINUS", "$accept", "program", "$@1", "declarations", "$@2", "$@3",
+  "identifier_list", "identifier", "statement_list", "statement",
+  "else_part", "print_list", "print_item", "read_list", "expr_rel",
+  "expression", YY_NULLPTR
 };
 
 static const char *
@@ -611,17 +620,18 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-     -34,     4,    17,   -34,     3,    18,    23,   -34,    25,    45,
-      58,    16,    34,    57,    43,    57,    51,    53,    62,    68,
-      76,   107,    73,   108,   -34,   -34,   -34,   -34,    56,    50,
-     -34,   -34,    72,   -34,     5,     5,     5,     2,   123,    84,
-     126,    55,     5,   -34,    57,   -34,   -34,   -34,     5,     5,
-      36,    86,    91,   -34,    19,   -34,    -4,   -34,    20,   110,
-     109,   -34,    -4,   -34,   -34,    96,     5,     5,     5,     5,
-     -34,    73,    73,   111,     2,   112,   131,     5,     5,   -34,
-      81,    81,   -34,   -34,   127,   -34,   -34,   -34,   -34,   -34,
-     101,    74,    73,   -34,   114,     5,   -34,   -34,   106,    73,
-     -34
+     -34,    18,     5,   -34,    -6,     7,    30,   -34,    32,    24,
+      73,    48,    34,    60,    54,    60,    63,    59,    84,    95,
+     104,   107,     9,   109,   -34,   -34,   -34,   -34,    94,   102,
+     -34,   -34,   105,   -34,     8,     8,     8,    66,   127,   121,
+     129,    77,     8,   -34,    60,   -34,   -34,   -34,     8,     8,
+      82,   114,    78,   115,   -34,   -17,   -34,    14,   -34,   -16,
+     116,   113,   -34,    14,   -34,   -34,    49,     8,     8,     8,
+       8,   -34,     9,     8,     8,     8,     8,     8,     8,     9,
+     117,    66,   118,   134,     8,     8,   -34,    29,    29,   -34,
+     -34,   131,    14,    14,    14,    14,    14,    14,   -34,   -34,
+     -34,   -34,   -34,   122,    96,     9,   -34,   123,     8,   -34,
+     -34,   119,     8,   103,     9,   -34
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -633,27 +643,28 @@ static const yytype_int8 yydefact[] =
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,    15,     3,    16,     9,    13,     0,
       11,    10,     0,    18,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     6,     0,     8,    41,    40,     0,     0,
-       0,     0,     0,    31,     0,    28,    30,    32,     0,     0,
-       0,    19,    14,    12,    38,     0,     0,     0,     0,     0,
-      17,     0,     0,     0,     0,     0,     0,     0,     0,    39,
-      34,    35,    36,    37,    26,    21,    24,    29,    25,    33,
-       0,     0,     0,    20,     0,     0,    27,    23,     0,     0,
-      22
+       0,     0,     0,     6,     0,     8,    47,    46,     0,     0,
+       0,     0,     0,     0,    31,     0,    28,    30,    32,     0,
+       0,     0,    19,    14,    12,    44,     0,     0,     0,     0,
+       0,    17,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,    45,    40,    41,    42,
+      43,    26,    34,    36,    35,    37,    38,    39,    21,    24,
+      29,    25,    33,     0,     0,     0,    20,     0,     0,    27,
+      23,     0,     0,     0,     0,    22
 };
 
 /* YYPGOTO[NTERM-NUM].  */
-static const yytype_int8 yypgoto[] =
+static const yytype_int16 yypgoto[] =
 {
-     -34,   -34,   -34,   -34,   -34,   -34,   122,    94,   115,   -22,
-     -34,   -34,    66,   -34,   -33
+     -34,   -34,   -34,   -34,   -34,   -34,   128,    98,   124,   -22,
+     -34,   -34,    65,   -34,   -31,   -33
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
        0,     1,     2,     8,    13,    15,    29,    30,    11,    26,
-      93,    54,    55,    58,    56
+     106,    55,    56,    59,    51,    52
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -661,67 +672,68 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      39,    50,    51,    52,     3,    46,    53,    47,    46,    62,
-      47,    66,    67,    68,    69,    64,    65,    16,    48,    17,
-       4,    48,    49,     5,    18,    49,    19,    20,    21,    22,
-      23,     9,    10,    80,    81,    82,    83,     6,    73,    75,
-      24,    25,    74,    76,    90,    91,    12,     7,    -5,    84,
-      85,    66,    67,    68,    69,    27,    16,    70,    17,    14,
-      28,    -7,    98,    18,    31,    19,    20,    21,    22,    23,
-      96,    43,    33,    44,    16,    34,    17,   100,    42,    24,
-      61,    18,    35,    19,    20,    21,    22,    23,    36,    66,
-      67,    68,    69,    45,    59,    44,    37,    24,    68,    69,
-      95,    66,    67,    68,    69,    71,    66,    67,    68,    69,
-      72,    66,    67,    68,    69,    79,    66,    67,    68,    69,
-      94,    66,    67,    68,    69,    99,    57,    38,    40,    60,
-      77,    78,    86,    88,    89,    97,    92,    32,    63,    41,
-      87
+      39,    50,    80,    82,    57,    53,    81,    83,     4,    63,
+      16,    46,    17,    47,     5,    65,    66,    18,     3,    19,
+      20,    21,    22,    23,    48,    12,     6,    -5,    49,    67,
+      68,    69,    70,    24,    87,    88,    89,    90,     9,    10,
+      92,    93,    94,    95,    96,    97,    69,    70,    57,    16,
+      91,    17,   104,   103,     7,    27,    18,    98,    19,    20,
+      21,    22,    23,    28,    67,    68,    69,    70,    86,    46,
+      54,    47,    24,    25,    14,    31,    -7,   111,    16,   113,
+      17,    34,    48,   109,    33,    18,    49,    19,    20,    21,
+      22,    23,   115,    67,    68,    69,    70,    67,    68,    69,
+      70,    24,    62,    71,    35,    73,    74,    75,    76,    77,
+      78,    67,    68,    69,    70,    36,    42,   108,    67,    68,
+      69,    70,   114,    43,    37,    44,    45,    38,    44,    40,
+      58,    60,    61,    72,    79,    85,    84,   102,    99,   101,
+     105,   107,    64,    32,   110,   112,   100,     0,    41
 };
 
 static const yytype_int8 yycheck[] =
 {
-      22,    34,    35,    36,     0,     3,     4,     5,     3,    42,
-       5,    15,    16,    17,    18,    48,    49,     1,    16,     3,
-       3,    16,    20,    20,     8,    20,    10,    11,    12,    13,
-      14,     6,     7,    66,    67,    68,    69,    19,    19,    19,
-      24,    25,    23,    23,    77,    78,     1,    24,     3,    71,
-      72,    15,    16,    17,    18,    21,     1,    21,     3,     1,
-       3,     3,    95,     8,    21,    10,    11,    12,    13,    14,
-      92,    21,    21,    23,     1,    22,     3,    99,    22,    24,
-      25,     8,    20,    10,    11,    12,    13,    14,    20,    15,
-      16,    17,    18,    21,    10,    23,    20,    24,    17,    18,
-      26,    15,    16,    17,    18,    19,    15,    16,    17,    18,
-      19,    15,    16,    17,    18,    19,    15,    16,    17,    18,
-      19,    15,    16,    17,    18,    19,     3,    20,    20,     3,
-      20,    22,    21,    21,     3,    21,     9,    15,    44,    24,
-      74
+      22,    34,    19,    19,    37,    36,    23,    23,     3,    42,
+       1,     3,     3,     5,    20,    48,    49,     8,     0,    10,
+      11,    12,    13,    14,    16,     1,    19,     3,    20,    15,
+      16,    17,    18,    24,    67,    68,    69,    70,     6,     7,
+      73,    74,    75,    76,    77,    78,    17,    18,    81,     1,
+      72,     3,    85,    84,    24,    21,     8,    79,    10,    11,
+      12,    13,    14,     3,    15,    16,    17,    18,    19,     3,
+       4,     5,    24,    25,     1,    21,     3,   108,     1,   112,
+       3,    22,    16,   105,    21,     8,    20,    10,    11,    12,
+      13,    14,   114,    15,    16,    17,    18,    15,    16,    17,
+      18,    24,    25,    21,    20,    27,    28,    29,    30,    31,
+      32,    15,    16,    17,    18,    20,    22,    21,    15,    16,
+      17,    18,    19,    21,    20,    23,    21,    20,    23,    20,
+       3,    10,     3,    19,    19,    22,    20,     3,    21,    21,
+       9,    19,    44,    15,    21,    26,    81,    -1,    24
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    29,    30,     0,     3,    20,    19,    24,    31,     6,
-       7,    36,     1,    32,     1,    33,     1,     3,     8,    10,
-      11,    12,    13,    14,    24,    25,    37,    21,     3,    34,
-      35,    21,    34,    21,    22,    20,    20,    20,    20,    37,
-      20,    36,    22,    21,    23,    21,     3,     5,    16,    20,
-      42,    42,    42,     4,    39,    40,    42,     3,    41,    10,
-       3,    25,    42,    35,    42,    42,    15,    16,    17,    18,
-      21,    19,    19,    19,    23,    19,    23,    20,    22,    19,
-      42,    42,    42,    42,    37,    37,    21,    40,    21,     3,
-      42,    42,     9,    38,    19,    26,    37,    21,    42,    19,
-      37
+       0,    35,    36,     0,     3,    20,    19,    24,    37,     6,
+       7,    42,     1,    38,     1,    39,     1,     3,     8,    10,
+      11,    12,    13,    14,    24,    25,    43,    21,     3,    40,
+      41,    21,    40,    21,    22,    20,    20,    20,    20,    43,
+      20,    42,    22,    21,    23,    21,     3,     5,    16,    20,
+      49,    48,    49,    48,     4,    45,    46,    49,     3,    47,
+      10,     3,    25,    49,    41,    49,    49,    15,    16,    17,
+      18,    21,    19,    27,    28,    29,    30,    31,    32,    19,
+      19,    23,    19,    23,    20,    22,    19,    49,    49,    49,
+      49,    43,    49,    49,    49,    49,    49,    49,    43,    21,
+      46,    21,     3,    48,    49,     9,    44,    19,    21,    43,
+      21,    48,    26,    49,    19,    43
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    28,    30,    29,    31,    32,    31,    33,    31,    31,
-      31,    34,    34,    35,    35,    36,    36,    37,    37,    37,
-      37,    37,    37,    37,    37,    37,    38,    38,    39,    39,
-      40,    40,    41,    41,    42,    42,    42,    42,    42,    42,
-      42,    42
+       0,    34,    36,    35,    37,    38,    37,    39,    37,    37,
+      37,    40,    40,    41,    41,    42,    42,    43,    43,    43,
+      43,    43,    43,    43,    43,    43,    44,    44,    45,    45,
+      46,    46,    47,    47,    48,    48,    48,    48,    48,    48,
+      49,    49,    49,    49,    49,    49,    49,    49
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -729,9 +741,9 @@ static const yytype_int8 yyr2[] =
 {
        0,     2,     0,     8,     0,     0,     5,     0,     5,     4,
        4,     1,     3,     1,     3,     0,     2,     4,     2,     3,
-       6,     5,     9,     7,     5,     5,     0,     2,     1,     3,
-       1,     1,     1,     3,     3,     3,     3,     3,     2,     3,
-       1,     1
+       6,     5,    11,     7,     5,     5,     0,     2,     1,     3,
+       1,     1,     1,     3,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     3,     2,     3,     1,     1
 };
 
 
@@ -1465,38 +1477,40 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* $@1: %empty  */
-#line 91 "sintactico.y"
+#line 98 "sintactico.y"
          {ls = creaLS(); inicializarReg();}
-#line 1471 "sintactico.tab.c"
+#line 1483 "sintactico.tab.c"
     break;
 
   case 3: /* program: $@1 "id" "(" ")" "{" declarations statement_list "}"  */
-#line 92 "sintactico.y"
+#line 99 "sintactico.y"
                                                              {
             if(analisis_ok()){
                 imprimeLS();
                 concatenaLC((yyvsp[-2].codigo),(yyvsp[-1].codigo));
                 imprimirLC((yyvsp[-2].codigo)); //la accion en mitad de la regla cuenta como simbolo
+                liberaLC((yyvsp[-2].codigo));
+                liberaLC((yyvsp[-1].codigo));
             }
             liberaLS(ls);
         }
-#line 1484 "sintactico.tab.c"
+#line 1498 "sintactico.tab.c"
     break;
 
   case 4: /* declarations: %empty  */
-#line 101 "sintactico.y"
+#line 110 "sintactico.y"
                                 {(yyval.codigo)=creaLC();}
-#line 1490 "sintactico.tab.c"
+#line 1504 "sintactico.tab.c"
     break;
 
   case 5: /* $@2: %empty  */
-#line 102 "sintactico.y"
+#line 111 "sintactico.y"
                                {t=VARIABLE;}
-#line 1496 "sintactico.tab.c"
+#line 1510 "sintactico.tab.c"
     break;
 
   case 6: /* declarations: declarations var $@2 identifier_list ";"  */
-#line 102 "sintactico.y"
+#line 111 "sintactico.y"
                                                                         {
                 if(analisis_ok()){
                     (yyval.codigo)=(yyvsp[-4].codigo);
@@ -1504,17 +1518,17 @@ yyreduce:
                     liberaLC((yyvsp[-1].codigo));
                 }
             }
-#line 1508 "sintactico.tab.c"
+#line 1522 "sintactico.tab.c"
     break;
 
   case 7: /* $@3: %empty  */
-#line 109 "sintactico.y"
+#line 118 "sintactico.y"
                                 {t=CONSTANTE;}
-#line 1514 "sintactico.tab.c"
+#line 1528 "sintactico.tab.c"
     break;
 
   case 8: /* declarations: declarations CONST $@3 identifier_list ";"  */
-#line 109 "sintactico.y"
+#line 118 "sintactico.y"
                                                                           {
                 if(analisis_ok()){
                   (yyval.codigo)=(yyvsp[-4].codigo);
@@ -1523,33 +1537,33 @@ yyreduce:
                 }
                
             }
-#line 1527 "sintactico.tab.c"
+#line 1541 "sintactico.tab.c"
     break;
 
   case 9: /* declarations: declarations var error ";"  */
-#line 117 "sintactico.y"
+#line 126 "sintactico.y"
                                          {(yyval.codigo)=creaLC();}
-#line 1533 "sintactico.tab.c"
+#line 1547 "sintactico.tab.c"
     break;
 
   case 10: /* declarations: declarations CONST error ";"  */
-#line 118 "sintactico.y"
+#line 127 "sintactico.y"
                                            {(yyval.codigo)=creaLC();}
-#line 1539 "sintactico.tab.c"
+#line 1553 "sintactico.tab.c"
     break;
 
   case 11: /* identifier_list: identifier  */
-#line 121 "sintactico.y"
+#line 130 "sintactico.y"
                                   {
   if(analisis_ok()){
     (yyval.codigo)=(yyvsp[0].codigo);
   }
   }
-#line 1549 "sintactico.tab.c"
+#line 1563 "sintactico.tab.c"
     break;
 
   case 12: /* identifier_list: identifier_list "," identifier  */
-#line 126 "sintactico.y"
+#line 135 "sintactico.y"
                                                       {
                                                       if(analisis_ok()){
                                                       (yyval.codigo)=(yyvsp[-2].codigo);
@@ -1557,21 +1571,21 @@ yyreduce:
                                                       liberaLC((yyvsp[0].codigo));
                                                       }
                                                       }
-#line 1561 "sintactico.tab.c"
+#line 1575 "sintactico.tab.c"
     break;
 
   case 13: /* identifier: "id"  */
-#line 134 "sintactico.y"
+#line 143 "sintactico.y"
                       {insertaID((yyvsp[0].cadena),0);
                       if(analisis_ok()){
                         (yyval.codigo)=creaLC();
                       }
                       }
-#line 1571 "sintactico.tab.c"
+#line 1585 "sintactico.tab.c"
     break;
 
   case 14: /* identifier: "id" "=" expression  */
-#line 139 "sintactico.y"
+#line 148 "sintactico.y"
                                     {insertaID((yyvsp[-2].cadena),0);
                                     if(analisis_ok()){
                                       (yyval.codigo)=(yyvsp[0].codigo);
@@ -1584,21 +1598,21 @@ yyreduce:
                                       liberarReg(op.res);
                                     }
                                     }
-#line 1588 "sintactico.tab.c"
+#line 1602 "sintactico.tab.c"
     break;
 
   case 15: /* statement_list: %empty  */
-#line 152 "sintactico.y"
+#line 161 "sintactico.y"
                                 {
                                 if(analisis_ok()){
                                   (yyval.codigo)=creaLC();
                                 }
                                 }
-#line 1598 "sintactico.tab.c"
+#line 1612 "sintactico.tab.c"
     break;
 
   case 16: /* statement_list: statement_list statement  */
-#line 157 "sintactico.y"
+#line 166 "sintactico.y"
                                          {
                 if(analisis_ok()){
                   (yyval.codigo) = (yyvsp[-1].codigo);
@@ -1606,11 +1620,11 @@ yyreduce:
                   liberaLC((yyvsp[0].codigo));
                 }
               }
-#line 1610 "sintactico.tab.c"
+#line 1624 "sintactico.tab.c"
     break;
 
   case 17: /* statement: "id" "=" expression ";"  */
-#line 165 "sintactico.y"
+#line 174 "sintactico.y"
                                         {buscarID((yyvsp[-3].cadena),1);
                                         
                                         
@@ -1625,29 +1639,29 @@ yyreduce:
                                           liberarReg(op.res);
                                         }
                                         }
-#line 1629 "sintactico.tab.c"
+#line 1643 "sintactico.tab.c"
     break;
 
   case 18: /* statement: error ";"  */
-#line 179 "sintactico.y"
-                     {(yyval.codigo)=creaLC();}
-#line 1635 "sintactico.tab.c"
+#line 188 "sintactico.y"
+                     {(yyval.codigo)=creaLC();      }
+#line 1649 "sintactico.tab.c"
     break;
 
   case 19: /* statement: "{" statement_list "}"  */
-#line 180 "sintactico.y"
+#line 189 "sintactico.y"
                                         {
                                           if(analisis_ok()){
                                             (yyval.codigo) = (yyvsp[-1].codigo);
                                           }
                                           
                                         }
-#line 1646 "sintactico.tab.c"
+#line 1660 "sintactico.tab.c"
     break;
 
-  case 20: /* statement: "if" "(" expression ")" statement else_part  */
-#line 186 "sintactico.y"
-                                                        {
+  case 20: /* statement: "if" "(" expr_rel ")" statement else_part  */
+#line 195 "sintactico.y"
+                                                      {
           if(analisis_ok()){
           (yyval.codigo) = (yyvsp[-3].codigo);
           Operacion op;
@@ -1679,12 +1693,12 @@ yyreduce:
           liberaLC((yyvsp[-1].codigo));
          }
          }
-#line 1683 "sintactico.tab.c"
+#line 1697 "sintactico.tab.c"
     break;
 
-  case 21: /* statement: "while" "(" expression ")" statement  */
-#line 218 "sintactico.y"
-                                                      {
+  case 21: /* statement: "while" "(" expr_rel ")" statement  */
+#line 227 "sintactico.y"
+                                                    {
           if(analisis_ok()){
           (yyval.codigo) = creaLC();
           Operacion op;
@@ -1712,48 +1726,44 @@ yyreduce:
           liberaLC((yyvsp[0].codigo));
          }
          }
-#line 1716 "sintactico.tab.c"
+#line 1730 "sintactico.tab.c"
     break;
 
-  case 22: /* statement: "for" "(" "id" "=" expression ":" expression ")" statement  */
-#line 246 "sintactico.y"
-                                                                    {
-          buscarID((yyvsp[-6].cadena),0);
+  case 22: /* statement: "for" "(" "id" "=" expression ";" expr_rel ":" expression ")" statement  */
+#line 255 "sintactico.y"
+                                                                                {
+          buscarID((yyvsp[-8].cadena),1);
           if(analisis_ok()){
-          (yyval.codigo) = (yyvsp[-4].codigo);
+          (yyval.codigo) = (yyvsp[-6].codigo);
           Operacion op;
           char* etiqFor = nuevaEtiqueta();
           char* etiqEndFor = nuevaEtiqueta();
           op.op = "sw";
-          op.res = recuperaResLC((yyvsp[-4].codigo));
-          op.arg1 = concatena("_",(yyvsp[-6].cadena));
+          op.res = recuperaResLC((yyvsp[-6].codigo));
+          op.arg1 = concatena("_",(yyvsp[-8].cadena));
           op.arg2 = NULL;
           insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
           op.op = concatena(etiqFor,":");
           op.res = op.arg1 = op.arg2 = NULL;
           insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
-          op.op = "lw";
+          concatenaLC((yyval.codigo),(yyvsp[-4].codigo));
+          op.op = "beqz";
           op.res = recuperaResLC((yyvsp[-4].codigo));
-          op.arg1 = concatena("_",(yyvsp[-6].cadena));
+          op.arg1 = etiqEndFor;
           op.arg2 = NULL;
           insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
+          concatenaLC((yyval.codigo),(yyvsp[0].codigo)); //añadimos el statement
           concatenaLC((yyval.codigo),(yyvsp[-2].codigo));
-          op.op = "beq";
-          op.res = recuperaResLC((yyvsp[-4].codigo));
-          op.arg1 = recuperaResLC((yyvsp[-2].codigo));
-          op.arg2 = etiqEndFor;
-          insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
-          concatenaLC((yyval.codigo),(yyvsp[0].codigo));
           //hacemos el incremento
-          op.op = "addi";
-          op.res = recuperaResLC((yyvsp[-4].codigo));
-          op.arg1 = recuperaResLC((yyvsp[-4].codigo));
-          op.arg2 = "1";
+          op.op = "add";
+          op.res = recuperaResLC((yyvsp[-6].codigo));
+          op.arg1 = recuperaResLC((yyvsp[-6].codigo));
+          op.arg2 = recuperaResLC((yyvsp[-2].codigo));
           insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
           //lo guardamos en la variable global
           op.op = "sw";
-          op.res = recuperaResLC((yyvsp[-4].codigo));
-          op.arg1 = concatena("_",(yyvsp[-6].cadena));
+          op.res = recuperaResLC((yyvsp[-6].codigo));
+          op.arg1 = concatena("_",(yyvsp[-8].cadena));
           op.arg2 = NULL;
           insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
           op.op = "b";
@@ -1763,14 +1773,20 @@ yyreduce:
           op.op = concatena(etiqEndFor,":");
           op.res = op.arg1 = op.arg2 = NULL;
           insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
+          liberarReg(recuperaResLC((yyvsp[-6].codigo)));
+          liberarReg(recuperaResLC((yyvsp[-4].codigo)));
+          liberarReg(recuperaResLC((yyvsp[-2].codigo)));
+          liberaLC((yyvsp[-4].codigo));
+          liberaLC((yyvsp[-2].codigo));
+          liberaLC((yyvsp[0].codigo));
           }
           }
-#line 1769 "sintactico.tab.c"
+#line 1785 "sintactico.tab.c"
     break;
 
-  case 23: /* statement: "do" statement "while" "(" expression ")" ";"  */
-#line 294 "sintactico.y"
-                                                         {
+  case 23: /* statement: "do" statement "while" "(" expr_rel ")" ";"  */
+#line 305 "sintactico.y"
+                                                       {
           if(analisis_ok()){
           (yyval.codigo) = creaLC();
           Operacion op;
@@ -1790,45 +1806,45 @@ yyreduce:
           liberaLC((yyvsp[-2].codigo));
           }
          }
-#line 1794 "sintactico.tab.c"
+#line 1810 "sintactico.tab.c"
     break;
 
   case 24: /* statement: "print" "(" print_list ")" ";"  */
-#line 314 "sintactico.y"
+#line 325 "sintactico.y"
                                                 {if(analisis_ok()) (yyval.codigo) = (yyvsp[-2].codigo);}
-#line 1800 "sintactico.tab.c"
+#line 1816 "sintactico.tab.c"
     break;
 
   case 25: /* statement: "read" "(" read_list ")" ";"  */
-#line 315 "sintactico.y"
+#line 326 "sintactico.y"
                                               {if(analisis_ok()) (yyval.codigo)=(yyvsp[-2].codigo);}
-#line 1806 "sintactico.tab.c"
+#line 1822 "sintactico.tab.c"
     break;
 
   case 26: /* else_part: %empty  */
-#line 317 "sintactico.y"
+#line 328 "sintactico.y"
                         {(yyval.codigo) = NULL;}
-#line 1812 "sintactico.tab.c"
+#line 1828 "sintactico.tab.c"
     break;
 
   case 27: /* else_part: "else" statement  */
-#line 318 "sintactico.y"
+#line 329 "sintactico.y"
                                       {
               if(analisis_ok()){
                 (yyval.codigo)=(yyvsp[0].codigo);
               }
               }
-#line 1822 "sintactico.tab.c"
+#line 1838 "sintactico.tab.c"
     break;
 
   case 28: /* print_list: print_item  */
-#line 324 "sintactico.y"
+#line 335 "sintactico.y"
                               {if(analisis_ok()) (yyval.codigo)=(yyvsp[0].codigo);}
-#line 1828 "sintactico.tab.c"
+#line 1844 "sintactico.tab.c"
     break;
 
   case 29: /* print_list: print_list "," print_item  */
-#line 325 "sintactico.y"
+#line 336 "sintactico.y"
                                             {
             if(analisis_ok()){
             (yyval.codigo)=(yyvsp[-2].codigo);
@@ -1836,11 +1852,11 @@ yyreduce:
             liberaLC((yyvsp[0].codigo));
             }
           }
-#line 1840 "sintactico.tab.c"
+#line 1856 "sintactico.tab.c"
     break;
 
   case 30: /* print_item: expression  */
-#line 333 "sintactico.y"
+#line 344 "sintactico.y"
                               {
                           if(analisis_ok()){
                             (yyval.codigo) = (yyvsp[0].codigo);
@@ -1862,11 +1878,11 @@ yyreduce:
                             
                           }          
                           }
-#line 1866 "sintactico.tab.c"
+#line 1882 "sintactico.tab.c"
     break;
 
   case 31: /* print_item: "string"  */
-#line 354 "sintactico.y"
+#line 365 "sintactico.y"
                           {
                           insertarString((yyvsp[0].cadena),numStr);
                           if(analisis_ok()){
@@ -1889,11 +1905,11 @@ yyreduce:
                             insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
                           }          
                           }
-#line 1893 "sintactico.tab.c"
+#line 1909 "sintactico.tab.c"
     break;
 
   case 32: /* read_list: "id"  */
-#line 377 "sintactico.y"
+#line 388 "sintactico.y"
                     {buscarID((yyvsp[0].cadena),1);
                     if(analisis_ok()){
                       (yyval.codigo)=creaLC();
@@ -1915,11 +1931,11 @@ yyreduce:
                     }
                     
                     }
-#line 1919 "sintactico.tab.c"
+#line 1935 "sintactico.tab.c"
     break;
 
   case 33: /* read_list: read_list "," "id"  */
-#line 398 "sintactico.y"
+#line 409 "sintactico.y"
                                     {
                                     buscarID((yyvsp[0].cadena),1);
                                     if(analisis_ok()){
@@ -1941,11 +1957,125 @@ yyreduce:
                                       liberarReg(op.res);
                                       }
                                     }
-#line 1945 "sintactico.tab.c"
+#line 1961 "sintactico.tab.c"
     break;
 
-  case 34: /* expression: expression "+" expression  */
-#line 420 "sintactico.y"
+  case 34: /* expr_rel: expression "<" expression  */
+#line 431 "sintactico.y"
+                                    {
+                                      if(analisis_ok()){
+                                        (yyval.codigo)=(yyvsp[-2].codigo);
+                                        concatenaLC((yyval.codigo),(yyvsp[0].codigo));
+                                        Operacion op;
+                                        op.op="slt";
+                                        op.res=recuperaResLC((yyvsp[-2].codigo));
+                                        op.arg1=recuperaResLC((yyvsp[-2].codigo));
+                                        op.arg2=recuperaResLC((yyvsp[0].codigo));
+                                        insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
+                                        liberaLC((yyvsp[0].codigo));
+                                        liberarReg(op.arg2);
+                                      }
+         }
+#line 1980 "sintactico.tab.c"
+    break;
+
+  case 35: /* expr_rel: expression ">" expression  */
+#line 445 "sintactico.y"
+                                     {
+                                      if(analisis_ok()){
+                                        (yyval.codigo)=(yyvsp[-2].codigo);
+                                        concatenaLC((yyval.codigo),(yyvsp[0].codigo));
+                                        Operacion op;
+                                        op.op="sgt";
+                                        op.res=recuperaResLC((yyvsp[-2].codigo));
+                                        op.arg1=recuperaResLC((yyvsp[-2].codigo));
+                                        op.arg2=recuperaResLC((yyvsp[0].codigo));
+                                        insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
+                                        liberaLC((yyvsp[0].codigo));
+                                        liberarReg(op.arg2);
+                                      }
+         }
+#line 1999 "sintactico.tab.c"
+    break;
+
+  case 36: /* expr_rel: expression "<=" expression  */
+#line 460 "sintactico.y"
+                                      {
+                                      if(analisis_ok()){
+                                        (yyval.codigo)=(yyvsp[-2].codigo);
+                                        concatenaLC((yyval.codigo),(yyvsp[0].codigo));
+                                        Operacion op;
+                                        op.op="sle";
+                                        op.res=recuperaResLC((yyvsp[-2].codigo));
+                                        op.arg1=recuperaResLC((yyvsp[-2].codigo));
+                                        op.arg2=recuperaResLC((yyvsp[0].codigo));
+                                        insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
+                                        liberaLC((yyvsp[0].codigo));
+                                        liberarReg(op.arg2);
+                                      }
+         }
+#line 2018 "sintactico.tab.c"
+    break;
+
+  case 37: /* expr_rel: expression ">=" expression  */
+#line 474 "sintactico.y"
+                                      {
+                                      if(analisis_ok()){
+                                        (yyval.codigo)=(yyvsp[-2].codigo);
+                                        concatenaLC((yyval.codigo),(yyvsp[0].codigo));
+                                        Operacion op;
+                                        op.op="sge";
+                                        op.res=recuperaResLC((yyvsp[-2].codigo));
+                                        op.arg1=recuperaResLC((yyvsp[-2].codigo));
+                                        op.arg2=recuperaResLC((yyvsp[0].codigo));
+                                        insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
+                                        liberaLC((yyvsp[0].codigo));
+                                        liberarReg(op.arg2);
+                                      }
+         }
+#line 2037 "sintactico.tab.c"
+    break;
+
+  case 38: /* expr_rel: expression "==" expression  */
+#line 488 "sintactico.y"
+                                      {
+                                      if(analisis_ok()){
+                                        (yyval.codigo)=(yyvsp[-2].codigo);
+                                        concatenaLC((yyval.codigo),(yyvsp[0].codigo));
+                                        Operacion op;
+                                        op.op="seq";
+                                        op.res=recuperaResLC((yyvsp[-2].codigo));
+                                        op.arg1=recuperaResLC((yyvsp[-2].codigo));
+                                        op.arg2=recuperaResLC((yyvsp[0].codigo));
+                                        insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
+                                        liberaLC((yyvsp[0].codigo));
+                                        liberarReg(op.arg2);
+                                      }
+         }
+#line 2056 "sintactico.tab.c"
+    break;
+
+  case 39: /* expr_rel: expression "!=" expression  */
+#line 502 "sintactico.y"
+                                     {
+                                      if(analisis_ok()){
+                                        (yyval.codigo)=(yyvsp[-2].codigo);
+                                        concatenaLC((yyval.codigo),(yyvsp[0].codigo));
+                                        Operacion op;
+                                        op.op="sne";
+                                        op.res=recuperaResLC((yyvsp[-2].codigo));
+                                        op.arg1=recuperaResLC((yyvsp[-2].codigo));
+                                        op.arg2=recuperaResLC((yyvsp[0].codigo));
+                                        insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
+                                        liberaLC((yyvsp[0].codigo));
+                                        liberarReg(op.arg2);
+                                      }
+         }
+#line 2075 "sintactico.tab.c"
+    break;
+
+  case 40: /* expression: expression "+" expression  */
+#line 517 "sintactico.y"
                                             {
                                             if(analisis_ok()){
                                               (yyval.codigo)=(yyvsp[-2].codigo);
@@ -1959,12 +2089,12 @@ yyreduce:
                                               liberaLC((yyvsp[0].codigo));
                                               liberarReg(op.arg2);
                                             }
-                                            }
-#line 1964 "sintactico.tab.c"
+}
+#line 2094 "sintactico.tab.c"
     break;
 
-  case 35: /* expression: expression "-" expression  */
-#line 434 "sintactico.y"
+  case 41: /* expression: expression "-" expression  */
+#line 531 "sintactico.y"
                                             {
                                             if(analisis_ok()){
                                               (yyval.codigo)=(yyvsp[-2].codigo);
@@ -1979,11 +2109,11 @@ yyreduce:
                                               liberarReg(op.arg2);
                                             }
                                             }
-#line 1983 "sintactico.tab.c"
+#line 2113 "sintactico.tab.c"
     break;
 
-  case 36: /* expression: expression "*" expression  */
-#line 448 "sintactico.y"
+  case 42: /* expression: expression "*" expression  */
+#line 545 "sintactico.y"
                                             {
                                             if(analisis_ok()){
                                               (yyval.codigo)=(yyvsp[-2].codigo);
@@ -1998,11 +2128,11 @@ yyreduce:
                                               liberarReg(op.arg2);
                                             }
                                             }
-#line 2002 "sintactico.tab.c"
+#line 2132 "sintactico.tab.c"
     break;
 
-  case 37: /* expression: expression "/" expression  */
-#line 462 "sintactico.y"
+  case 43: /* expression: expression "/" expression  */
+#line 559 "sintactico.y"
                                             {
                                              if(analisis_ok()){
                                               (yyval.codigo)=(yyvsp[-2].codigo);
@@ -2017,11 +2147,11 @@ yyreduce:
                                               liberarReg(op.arg2);
                                             }
                                             }
-#line 2021 "sintactico.tab.c"
+#line 2151 "sintactico.tab.c"
     break;
 
-  case 38: /* expression: "-" expression  */
-#line 476 "sintactico.y"
+  case 44: /* expression: "-" expression  */
+#line 573 "sintactico.y"
                                               {
                                               //operacion neg $tx,$ty pone en tx el negativo de ty
                                               if(analisis_ok()){
@@ -2034,17 +2164,17 @@ yyreduce:
                                                 insertaLC((yyval.codigo),finalLC((yyval.codigo)),op);
                                                 }
                                               }
-#line 2038 "sintactico.tab.c"
+#line 2168 "sintactico.tab.c"
     break;
 
-  case 39: /* expression: "(" expression ")"  */
-#line 488 "sintactico.y"
+  case 45: /* expression: "(" expression ")"  */
+#line 585 "sintactico.y"
                                     { (yyval.codigo) = (yyvsp[-1].codigo); }
-#line 2044 "sintactico.tab.c"
+#line 2174 "sintactico.tab.c"
     break;
 
-  case 40: /* expression: "const"  */
-#line 489 "sintactico.y"
+  case 46: /* expression: "const"  */
+#line 586 "sintactico.y"
                       {
                       if(analisis_ok){
                         (yyval.codigo)=creaLC();
@@ -2057,11 +2187,11 @@ yyreduce:
                         guardaResLC((yyval.codigo),op.res);
                       }
                       }
-#line 2061 "sintactico.tab.c"
+#line 2191 "sintactico.tab.c"
     break;
 
-  case 41: /* expression: "id"  */
-#line 501 "sintactico.y"
+  case 47: /* expression: "id"  */
+#line 598 "sintactico.y"
                     {buscarID((yyvsp[0].cadena),0);
                       if(analisis_ok){
                         (yyval.codigo)=creaLC();
@@ -2075,11 +2205,11 @@ yyreduce:
                       }
                       
                     }
-#line 2079 "sintactico.tab.c"
+#line 2209 "sintactico.tab.c"
     break;
 
 
-#line 2083 "sintactico.tab.c"
+#line 2213 "sintactico.tab.c"
 
       default: break;
     }
@@ -2303,7 +2433,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 515 "sintactico.y"
+#line 612 "sintactico.y"
       
 
 void yyerror(const char* msg) {

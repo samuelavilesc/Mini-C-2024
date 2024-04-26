@@ -12,6 +12,7 @@ $str5: .asciiz "\n"
 $str6: .asciiz "\n"
 $str7: .asciiz "Final"
 $str8: .asciiz "\n"
+$str9: .asciiz "\n"
 .text
 .globl main
 main:
@@ -71,17 +72,24 @@ syscall
 la $a0,$str8
 li $v0,4
 syscall
+li $t0,11
+sw $t0,_e
 li $t0,1
 sw $t0,_c
 etiq1:
-lw $t0,_c
-li $t1,10
-beq $t0,$t1,etiq2
-lw $t2,_c
+lw $t1,_c
+lw $t2,_e
+slt $t1,$t1,$t2
+beqz $t1,etiq2
+lw $t3,_c
 li $v0,1
-move $a0,$t2
+move $a0,$t3
 syscall
-addi $t0,$t0,1
+la $a0,$str9
+li $v0,4
+syscall
+li $t2,2
+add $t0,$t0,$t2
 sw $t0,_c
 b etiq1
 etiq2:

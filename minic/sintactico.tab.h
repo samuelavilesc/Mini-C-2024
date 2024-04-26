@@ -84,7 +84,13 @@ extern int yydebug;
     LLAVI = 279,                   /* "{"  */
     LLAVD = 280,                   /* "}"  */
     DOSP = 281,                    /* ":"  */
-    UMINUS = 282                   /* UMINUS  */
+    MENOR = 282,                   /* "<"  */
+    MENORI = 283,                  /* "<="  */
+    MAYOR = 284,                   /* ">"  */
+    MAYORI = 285,                  /* ">="  */
+    IGUALD = 286,                  /* "=="  */
+    NOTIG = 287,                   /* "!="  */
+    UMINUS = 288                   /* UMINUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -99,7 +105,7 @@ union YYSTYPE
     char *cadena;
     ListaC codigo;
 
-#line 103 "sintactico.tab.h"
+#line 109 "sintactico.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
