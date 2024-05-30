@@ -13,7 +13,7 @@ D [0-9]
 /*_ es para pq algunas palabras van asi separadas*/
 L [a-zA-Z_]
 /*MODO PANICO*/
-ERROR [^0-9a-zA-Z_ \t\n\r;{}()=+\-*/,"]+
+ERROR [^0-9a-zA-Z_ \<\>\≤\>=\==\!=\t\n\r;{}()=+\-*/,"]+
 
 ESCAPE \\\*|\\\\|\\\"|\\[ntr]
 /* Opciones de flex */

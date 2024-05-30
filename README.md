@@ -1,12 +1,12 @@
 # Práctica de Compiladores
 
 Compiladores
-(Curso 2023 - 2024
+(Curso 2023 - 2024)
 
 
 
 
-Por: ==Samuel Avilés Conesa - Gloria Sánchez Alonso==
+Por: Samuel Avilés Conesa - Gloria Sánchez Alonso
 
 Profesor: **Eduardo Martínez Gracia**
 
